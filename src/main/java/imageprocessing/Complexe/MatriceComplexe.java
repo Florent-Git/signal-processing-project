@@ -9,6 +9,8 @@
 
 package imageprocessing.Complexe;
 
+import java.util.Arrays;
+
 /**
  *
  * @author HP_Propri�taire
@@ -89,5 +91,30 @@ public class MatriceComplexe
     public int getColonnes() {
         return colonnes;
     }
-    
+
+    /**
+     * Redéfinition des méthodes HASH et EQUALS
+     * Généré avec IntelliJ
+     * @author Florent
+     */
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MatriceComplexe that = (MatriceComplexe) o;
+
+        if (lignes != that.lignes) return false;
+        if (colonnes != that.colonnes) return false;
+        return Arrays.deepEquals(m, that.m);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.deepHashCode(m);
+        result = 31 * result + lignes;
+        result = 31 * result + colonnes;
+        return result;
+    }
 }
