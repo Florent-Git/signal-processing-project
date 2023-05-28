@@ -13,8 +13,10 @@ import cimage.observers.events.*;
 import imageprocessing.Complexe.MatriceComplexe;
 import imageprocessing.Fourier.Fourier;
 import imageprocessing.Histogramme.Histogramme;
+import imageprocessing.Lineaire.FiltrageLineaireGlobal;
 import isilimageprocessing.dialogues.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.*;
 import javax.swing.*;
 import org.jfree.chart.ChartFactory;
@@ -60,6 +62,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuDessiner.setEnabled(false);
         jMenuFourier.setEnabled(false);
         jMenuHistogramme.setEnabled(false);
+        jMenuLineaire.setEnabled(false);
         
         couleurPinceauRGB = Color.BLACK;
         couleurPinceauNG = 0;
@@ -102,6 +105,35 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuItemFourierAfficherPartieImaginaire = new javax.swing.JMenuItem();
         jMenuHistogramme = new javax.swing.JMenu();
         jMenuHistogrammeAfficher = new javax.swing.JMenuItem();
+
+        jMenuLineaire = new JMenu();
+        jMenuLineaire.setText("Lineaire");
+        jMenuBar1.add(jMenuLineaire);
+
+        jMenuGlobal = new JMenu();
+        jMenuGlobal.setText("Global");
+        jMenuLineaire.add(jMenuGlobal);
+
+        jMenuItemPBIGlobal = new JMenuItem();
+        jMenuItemPBIGlobal.setText("Passe-bas ideal");
+        jMenuItemPBIGlobal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPBIGlobalActionPerformed(evt);
+            }
+        });
+        jMenuGlobal.add(jMenuItemPBIGlobal);
+
+        jMenuItemPHIGlobal = new JMenuItem();
+        jMenuItemPHIGlobal.setText("Passe-haut ideal");
+        jMenuItemPHIGlobal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPHIGlobalActionPerformed(evt);
+            }
+        });
+        jMenuGlobal.add(jMenuItemPHIGlobal);
+
+
+
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TestCImage3");
@@ -364,6 +396,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuDessiner.setEnabled(true);
         jMenuFourier.setEnabled(true);
         jMenuHistogramme.setEnabled(true);
+        jMenuLineaire.setEnabled(true);
     }
     
     private void activeMenusRGB()
@@ -661,6 +694,30 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             }
 	}
     }//GEN-LAST:event_jMenuItemOuvrirRGBActionPerformed
+
+    private void jMenuItemPBIGlobalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAffichePBIGlobal dialog = new JDialogAffichePBIGlobal(this,true, imageNG.getMatrice(),"Lineaire Global : Passe-bas Ideal");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemPHIGlobalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAffichePHIGlobal dialog = new JDialogAffichePHIGlobal(this,true, imageNG.getMatrice(),"Lineaire Global : Passe-haut Ideal");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
     
     /**
      * @param args the command line arguments
@@ -813,5 +870,9 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
+    private javax.swing.JMenu jMenuLineaire;
+    private javax.swing.JMenu jMenuGlobal;
+    private javax.swing.JMenuItem jMenuItemPBIGlobal;
+    private javax.swing.JMenuItem jMenuItemPHIGlobal;
     
 }
