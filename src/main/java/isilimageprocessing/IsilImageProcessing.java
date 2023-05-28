@@ -106,6 +106,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuHistogramme = new javax.swing.JMenu();
         jMenuHistogrammeAfficher = new javax.swing.JMenuItem();
 
+        /* Filtrage linéaire */
         jMenuLineaire = new JMenu();
         jMenuLineaire.setText("Lineaire");
         jMenuBar1.add(jMenuLineaire);
@@ -132,11 +133,28 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         });
         jMenuGlobal.add(jMenuItemPHIGlobal);
 
+        jMenuItemPBBWGlobal = new JMenuItem();
+        jMenuItemPBBWGlobal.setText("Passe-bas Butterworth");
+        jMenuItemPBBWGlobal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPBBWGlobalActionPerformed(evt);
+            }
+        });
+        jMenuGlobal.add(jMenuItemPBBWGlobal);
+
+        jMenuItemPHBWGlobal = new JMenuItem();
+        jMenuItemPHBWGlobal.setText("Passe-haut Butterworth");
+        jMenuItemPHBWGlobal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPHBWGlobalActionPerformed(evt);
+            }
+        });
+        jMenuGlobal.add(jMenuItemPHBWGlobal);
 
 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("TestCImage3");
+        setTitle("Image Processing");
 
         jMenuImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Net 13_p1.jpg")));
         jMenuImage.setText("Image");
@@ -718,6 +736,30 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             System.out.println("Erreur CImageNG : " + ex.getMessage());
         }
     }
+
+    private void jMenuItemPBBWGlobalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAffichePBBWGlobal dialog = new JDialogAffichePBBWGlobal(this,true, imageNG.getMatrice(),"Lineaire Global : Passe-bas Butterworth");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemPHBWGlobalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAffichePHBWGlobal dialog = new JDialogAffichePHBWGlobal(this,true, imageNG.getMatrice(),"Lineaire Global : Passe-haut Butterworth");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
     
     /**
      * @param args the command line arguments
@@ -874,5 +916,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private javax.swing.JMenu jMenuGlobal;
     private javax.swing.JMenuItem jMenuItemPBIGlobal;
     private javax.swing.JMenuItem jMenuItemPHIGlobal;
+    private javax.swing.JMenuItem jMenuItemPBBWGlobal;
+    private javax.swing.JMenuItem jMenuItemPHBWGlobal;
     
 }

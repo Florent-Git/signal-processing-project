@@ -40,7 +40,7 @@ public class JDialogAffichePHIGlobal extends JDialog {
         jScrollPaneTransf.setViewportView(observerTransf);
 
         // Créer le sélecteur de nombres entiers
-        numberSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
+        numberSpinner = new JSpinner(new SpinnerNumberModel(15, 15, 255, 1));
 
         // Créer un bouton pour afficher l'image sélectionnée
         JButton showImageButton = new JButton("Traiter l'image");
