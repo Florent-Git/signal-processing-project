@@ -106,7 +106,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuHistogramme = new javax.swing.JMenu();
         jMenuHistogrammeAfficher = new javax.swing.JMenuItem();
 
-        /* Filtrage linéaire */
+        /* Filtrage Linéaire Global */
         jMenuLineaire = new JMenu();
         jMenuLineaire.setText("Lineaire");
         jMenuBar1.add(jMenuLineaire);
@@ -151,7 +151,28 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         });
         jMenuGlobal.add(jMenuItemPHBWGlobal);
 
+        /* Filtrage Linéaire Local */
+        jMenuLocal = new JMenu();
+        jMenuLocal.setText("Local");
+        jMenuLineaire.add(jMenuLocal);
 
+        jMenuItemMCLocal = new JMenuItem();
+        jMenuItemMCLocal.setText("Masque de convolution");
+        jMenuItemMCLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMCLocalActionPerformed(evt);
+            }
+        });
+        jMenuLocal.add(jMenuItemMCLocal);
+
+        jMenuItemMYLocal = new JMenuItem();
+        jMenuItemMYLocal.setText("Moyenneur");
+        jMenuItemMYLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMYLocalActionPerformed(evt);
+            }
+        });
+        jMenuLocal.add(jMenuItemMYLocal);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Image Processing");
@@ -713,6 +734,8 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 	}
     }//GEN-LAST:event_jMenuItemOuvrirRGBActionPerformed
 
+
+    /* Filtre Linéaire Global */
     private void jMenuItemPBIGlobalActionPerformed(ActionEvent evt){
         try
         {
@@ -753,6 +776,31 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         try
         {
             JDialogAffichePHBWGlobal dialog = new JDialogAffichePHBWGlobal(this,true, imageNG.getMatrice(),"Lineaire Global : Passe-haut Butterworth");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    /* Filtre Linéaire Local */
+    private void jMenuItemMCLocalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAfficheMCLocal dialog = new JDialogAfficheMCLocal(this,true, imageNG.getMatrice(),"Lineaire Local : Masque de convolution");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemMYLocalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAfficheMYLocal dialog = new JDialogAfficheMYLocal(this,true, imageNG.getMatrice(),"Lineaire Local : Filtre Moyenneur");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -912,11 +960,17 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
+
+    /* Filtre Linéaire Global */
     private javax.swing.JMenu jMenuLineaire;
     private javax.swing.JMenu jMenuGlobal;
     private javax.swing.JMenuItem jMenuItemPBIGlobal;
     private javax.swing.JMenuItem jMenuItemPHIGlobal;
     private javax.swing.JMenuItem jMenuItemPBBWGlobal;
     private javax.swing.JMenuItem jMenuItemPHBWGlobal;
-    
+
+    /* Filtre Linéaire Local */
+    private javax.swing.JMenu jMenuLocal;
+    private javax.swing.JMenuItem jMenuItemMCLocal;
+    private javax.swing.JMenuItem jMenuItemMYLocal;
 }

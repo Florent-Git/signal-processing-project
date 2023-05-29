@@ -206,6 +206,11 @@ public class FiltrageLineaireGlobal {
         return add128(partReelle);
     }
 
+    /**
+     * Transforme un tableau de Int en tableau de Double
+     * @param intArray Le tableau de Int
+     * @return Le tableau de Double
+     */
     public static double[][] getDoubleArray(int[][] intArray){
         double[][] doubleArray = new double[intArray.length][intArray[0].length];
         for (int row = 0; row < intArray.length; row++) {
@@ -216,6 +221,11 @@ public class FiltrageLineaireGlobal {
         return doubleArray;
     }
 
+    /**
+     * Transforme un tableau de Double en tableau de Int
+     * @param doubleArray Le tableau de Double
+     * @return Le tableau de Int
+     */
     public static int[][] getIntArray(double[][] doubleArray){
         int[][] intArray = new int[doubleArray.length][doubleArray[0].length];
         for (int row = 0; row < doubleArray.length; row++) {
@@ -226,6 +236,11 @@ public class FiltrageLineaireGlobal {
         return intArray;
     }
 
+    /**
+     * Ajoute 128 à chaque élément d'un tableau 2D
+     * @param array Le tableau d'entiers à augmenter
+     * @return Le tableau d'entiers augmentés de 128
+     */
     public static int[][] add128(int[][] array){
         for (int row = 0; row < array.length; row++) {
             for (int column = 0; column < array[0].length; column++) {
