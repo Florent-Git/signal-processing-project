@@ -13,6 +13,7 @@ import cimage.observers.events.*;
 import imageprocessing.Complexe.MatriceComplexe;
 import imageprocessing.Fourier.Fourier;
 import imageprocessing.Histogramme.Histogramme;
+import imageprocessing.Lineaire.FiltrageLineaireGlobal;
 import isilimageprocessing.dialogues.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -69,6 +70,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuDessiner.setEnabled(false);
         jMenuFourier.setEnabled(false);
         jMenuHistogramme.setEnabled(false);
+        jMenuLineaire.setEnabled(false);
         
         couleurPinceauRGB = Color.BLACK;
         couleurPinceauNG = 0;
@@ -115,8 +117,76 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuHistogramme = new javax.swing.JMenu();
         jMenuHistogrammeAfficher = new javax.swing.JMenuItem();
 
-        // NON-LINEAR
 
+        /* Filtrage Linéaire Global */
+        jMenuLineaire = new JMenu();
+        jMenuLineaire.setText("Lineaire");
+        jMenuBar1.add(jMenuLineaire);
+
+        jMenuGlobal = new JMenu();
+        jMenuGlobal.setText("Global");
+        jMenuLineaire.add(jMenuGlobal);
+
+        jMenuItemPBIGlobal = new JMenuItem();
+        jMenuItemPBIGlobal.setText("Passe-bas ideal");
+        jMenuItemPBIGlobal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPBIGlobalActionPerformed(evt);
+            }
+        });
+        jMenuGlobal.add(jMenuItemPBIGlobal);
+
+        jMenuItemPHIGlobal = new JMenuItem();
+        jMenuItemPHIGlobal.setText("Passe-haut ideal");
+        jMenuItemPHIGlobal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPHIGlobalActionPerformed(evt);
+            }
+        });
+        jMenuGlobal.add(jMenuItemPHIGlobal);
+
+        jMenuItemPBBWGlobal = new JMenuItem();
+        jMenuItemPBBWGlobal.setText("Passe-bas Butterworth");
+        jMenuItemPBBWGlobal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPBBWGlobalActionPerformed(evt);
+            }
+        });
+        jMenuGlobal.add(jMenuItemPBBWGlobal);
+
+        jMenuItemPHBWGlobal = new JMenuItem();
+        jMenuItemPHBWGlobal.setText("Passe-haut Butterworth");
+        jMenuItemPHBWGlobal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPHBWGlobalActionPerformed(evt);
+            }
+        });
+        jMenuGlobal.add(jMenuItemPHBWGlobal);
+
+        /* Filtrage Linéaire Local */
+        jMenuLocal = new JMenu();
+        jMenuLocal.setText("Local");
+        jMenuLineaire.add(jMenuLocal);
+
+        jMenuItemMCLocal = new JMenuItem();
+        jMenuItemMCLocal.setText("Masque de convolution");
+        jMenuItemMCLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMCLocalActionPerformed(evt);
+            }
+        });
+        jMenuLocal.add(jMenuItemMCLocal);
+
+        jMenuItemMYLocal = new JMenuItem();
+        jMenuItemMYLocal.setText("Moyenneur");
+        jMenuItemMYLocal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemMYLocalActionPerformed(evt);
+            }
+        });
+        jMenuLocal.add(jMenuItemMYLocal);
+        
+        // NON-LINEAR
         jMenuNonLineaire = new JMenu();
         jMenuNonLineaire.setText("Non Lineaire");
         jMenuBar1.add(jMenuNonLineaire);
@@ -199,7 +269,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("TestCImage3");
+        setTitle("Image Processing");
 
         jMenuImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/Net 13_p1.jpg")));
         jMenuImage.setText("Image");
@@ -460,6 +530,8 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuFourier.setEnabled(true);
         jMenuHistogramme.setEnabled(true);
 
+
+        jMenuLineaire.setEnabled(true);
         jMenuNonLineaire.setEnabled(true);
     }
     
@@ -758,8 +830,82 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             }
 	}
     }//GEN-LAST:event_jMenuItemOuvrirRGBActionPerformed
+    
+    /* Filtre Linéaire Global */
+    private void jMenuItemPBIGlobalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAffichePBIGlobal dialog = new JDialogAffichePBIGlobal(this,true, imageNG.getMatrice(),"Lineaire Global : Passe-bas Ideal");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
 
-    private void jMenuItemErosionActionPerformed(ActionEvent evt){
+    private void jMenuItemPHIGlobalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAffichePHIGlobal dialog = new JDialogAffichePHIGlobal(this,true, imageNG.getMatrice(),"Lineaire Global : Passe-haut Ideal");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemPBBWGlobalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAffichePBBWGlobal dialog = new JDialogAffichePBBWGlobal(this,true, imageNG.getMatrice(),"Lineaire Global : Passe-bas Butterworth");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemPHBWGlobalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAffichePHBWGlobal dialog = new JDialogAffichePHBWGlobal(this,true, imageNG.getMatrice(),"Lineaire Global : Passe-haut Butterworth");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    /* Filtre Linéaire Local */
+    private void jMenuItemMCLocalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAfficheMCLocal dialog = new JDialogAfficheMCLocal(this,true, imageNG.getMatrice(),"Lineaire Local : Masque de convolution");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemMYLocalActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAfficheMYLocal dialog = new JDialogAfficheMYLocal(this,true, imageNG.getMatrice(),"Lineaire Local : Filtre Moyenneur");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+    
+      private void jMenuItemErosionActionPerformed(ActionEvent evt){
         try
         {
             JDialogAfficheErosion dialog = new JDialogAfficheErosion(this,true, imageNG.getMatrice(),"Non-Lineaire Elementaire : Erosion");
@@ -770,6 +916,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             System.out.println("Erreur CImageNG : " + ex.getMessage());
         }
     }
+    
     private void jMenuItemDilatationActionPerformed(ActionEvent evt){
         try
         {
@@ -781,6 +928,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             System.out.println("Erreur CImageNG : " + ex.getMessage());
         }
     }
+    
     private void jMenuItemOuvertureActionPerformed(ActionEvent evt){
         try
         {
@@ -792,6 +940,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             System.out.println("Erreur CImageNG : " + ex.getMessage());
         }
     }
+    
     private void jMenuItemFermetureActionPerformed(ActionEvent evt){
         try
         {
@@ -803,7 +952,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             System.out.println("Erreur CImageNG : " + ex.getMessage());
         }
     }
-
+    
     private void jMenuItemDilatationGeodesiqueActionPerformed(ActionEvent evt){
         try
         {
@@ -814,8 +963,8 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         {
             System.out.println("Erreur CImageNG : " + ex.getMessage());
         }
-    }
-
+    }  
+    
     private void jMenuItemReconstructionGeodesiqueActionPerformed(ActionEvent evt){
         try
         {
@@ -827,19 +976,18 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             System.out.println("Erreur CImageNG : " + ex.getMessage());
         }
     }
-
+    
     private void jMenuItemFiltreMedianActionPerformed(ActionEvent evt){
         try
         {
             JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
-            dialog.setVisible(true);
+             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
         {
             System.out.println("Erreur CImageNG : " + ex.getMessage());
         }
     }
-
 
     /**
      * @param args the command line arguments
@@ -992,6 +1140,19 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
+
+    /* Filtre Linéaire Global */
+    private javax.swing.JMenu jMenuLineaire;
+    private javax.swing.JMenu jMenuGlobal;
+    private javax.swing.JMenuItem jMenuItemPBIGlobal;
+    private javax.swing.JMenuItem jMenuItemPHIGlobal;
+    private javax.swing.JMenuItem jMenuItemPBBWGlobal;
+    private javax.swing.JMenuItem jMenuItemPHBWGlobal;
+
+    /* Filtre Linéaire Local */
+    private javax.swing.JMenu jMenuLocal;
+    private javax.swing.JMenuItem jMenuItemMCLocal;
+    private javax.swing.JMenuItem jMenuItemMYLocal;
 
     // NON-LINEAR
     private javax.swing.JMenu jMenuNonLineaire;
