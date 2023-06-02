@@ -15,8 +15,17 @@ import imageprocessing.Fourier.Fourier;
 import imageprocessing.Histogramme.Histogramme;
 import isilimageprocessing.dialogues.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.*;
 import javax.swing.*;
+
+import isilimageprocessing.dialogues.NonLinear.Complex.JDialogDilatationGeodesique;
+import isilimageprocessing.dialogues.NonLinear.Complex.JDialogFiltreMedian;
+import isilimageprocessing.dialogues.NonLinear.Complex.JDialogReconstructionGeodesique;
+import isilimageprocessing.dialogues.NonLinear.Elementary.JDialogAfficheDilatation;
+import isilimageprocessing.dialogues.NonLinear.Elementary.JDialogAfficheErosion;
+import isilimageprocessing.dialogues.NonLinear.Elementary.JDialogAfficheFermeture;
+import isilimageprocessing.dialogues.NonLinear.Elementary.JDialogAfficheOuverture;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -34,7 +43,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 {
     private CImageRGB imageRGB;
     private CImageNG  imageNG;
-    
+
     private JLabelBeanCImage observer;
     private Color couleurPinceauRGB;
     private int   couleurPinceauNG;
@@ -63,6 +72,9 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         
         couleurPinceauRGB = Color.BLACK;
         couleurPinceauNG = 0;
+
+        // NON-LINEAR
+        jMenuNonLineaire.setEnabled(false);
     }
     
     /** This method is called from within the constructor to
@@ -102,6 +114,89 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuItemFourierAfficherPartieImaginaire = new javax.swing.JMenuItem();
         jMenuHistogramme = new javax.swing.JMenu();
         jMenuHistogrammeAfficher = new javax.swing.JMenuItem();
+
+        // NON-LINEAR
+
+        jMenuNonLineaire = new JMenu();
+        jMenuNonLineaire.setText("Non Lineaire");
+        jMenuBar1.add(jMenuNonLineaire);
+        jMenuElementaire = new JMenu();
+        jMenuElementaire.setText("Elementaire");
+        jMenuComplexe = new JMenu();
+        jMenuComplexe.setText("Complexe");
+        jMenuNonLineaire.add(jMenuElementaire);
+        jMenuNonLineaire.add(jMenuComplexe);
+
+        // Erosion
+        jMenuItemErosion = new JMenuItem();
+        jMenuItemErosion.setText("Erosion");
+        jMenuItemErosion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemErosionActionPerformed(evt);
+            }
+        });
+        jMenuElementaire.add(jMenuItemErosion);
+
+        // Dilatation
+        jMenuItemDilatation = new JMenuItem();
+        jMenuItemDilatation.setText("Dilatation");
+        jMenuItemDilatation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDilatationActionPerformed(evt);
+            }
+        });
+        jMenuElementaire.add(jMenuItemDilatation);
+
+        // Ouverture
+        jMenuItemOuverture = new JMenuItem();
+        jMenuItemOuverture.setText("Ouverture");
+        jMenuItemOuverture.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemOuvertureActionPerformed(evt);
+            }
+        });
+        jMenuElementaire.add(jMenuItemOuverture);
+
+        // Fermeture
+        jMenuItemFermeture = new JMenuItem();
+        jMenuItemFermeture.setText("Fermeture");
+        jMenuItemFermeture.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFermetureActionPerformed(evt);
+            }
+        });
+        jMenuElementaire.add(jMenuItemFermeture);
+
+        // Dilatation Geodesique
+        jMenuItemDilatationGeodesique = new JMenuItem();
+        jMenuItemDilatationGeodesique.setText("Dilatation Geodesique");
+        jMenuItemDilatationGeodesique.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDilatationGeodesiqueActionPerformed(evt);
+            }
+        });
+        jMenuComplexe.add(jMenuItemDilatationGeodesique);
+
+        // Reconstruction Geodesique
+        jMenuItemReconstructionGeodesique = new JMenuItem();
+        jMenuItemReconstructionGeodesique.setText("Reconstruction Geodesique");
+        jMenuItemReconstructionGeodesique.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemReconstructionGeodesiqueActionPerformed(evt);
+            }
+        });
+        jMenuComplexe.add(jMenuItemReconstructionGeodesique);
+
+        // Filtre Median
+        jMenuItemFiltreMedian = new JMenuItem();
+        jMenuItemFiltreMedian.setText("Filtre Median");
+        jMenuItemFiltreMedian.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemFiltreMedianActionPerformed(evt);
+            }
+        });
+        jMenuComplexe.add(jMenuItemFiltreMedian);
+
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TestCImage3");
@@ -364,6 +459,8 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuDessiner.setEnabled(true);
         jMenuFourier.setEnabled(true);
         jMenuHistogramme.setEnabled(true);
+
+        jMenuNonLineaire.setEnabled(true);
     }
     
     private void activeMenusRGB()
@@ -661,7 +758,89 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             }
 	}
     }//GEN-LAST:event_jMenuItemOuvrirRGBActionPerformed
-    
+
+    private void jMenuItemErosionActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAfficheErosion dialog = new JDialogAfficheErosion(this,true, imageNG.getMatrice(),"Non-Lineaire Elementaire : Erosion");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+    private void jMenuItemDilatationActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAfficheDilatation dialog = new JDialogAfficheDilatation(this,true, imageNG.getMatrice(),"Non-Lineaire Elementaire : Dilatation");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+    private void jMenuItemOuvertureActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAfficheOuverture dialog = new JDialogAfficheOuverture(this,true, imageNG.getMatrice(),"Non-Lineaire Elementaire : Ouverture");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+    private void jMenuItemFermetureActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogAfficheFermeture dialog = new JDialogAfficheFermeture(this,true, imageNG.getMatrice(),"Non-Lineaire Elementaire : Fermeture");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemDilatationGeodesiqueActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogDilatationGeodesique dialog = new JDialogDilatationGeodesique(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Dilatation Geodesique");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemReconstructionGeodesiqueActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogReconstructionGeodesique dialog = new JDialogReconstructionGeodesique(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Reconstruction Geodesique");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemFiltreMedianActionPerformed(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+
     /**
      * @param args the command line arguments
      */
@@ -813,5 +992,16 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
-    
+
+    // NON-LINEAR
+    private javax.swing.JMenu jMenuNonLineaire;
+    private javax.swing.JMenu jMenuElementaire;
+    private javax.swing.JMenu jMenuComplexe;
+    private javax.swing.JMenuItem jMenuItemErosion;
+    private javax.swing.JMenuItem jMenuItemDilatation;
+    private javax.swing.JMenuItem jMenuItemOuverture;
+    private javax.swing.JMenuItem jMenuItemFermeture;
+    private javax.swing.JMenuItem jMenuItemDilatationGeodesique;
+    private javax.swing.JMenuItem jMenuItemReconstructionGeodesique;
+    private javax.swing.JMenuItem jMenuItemFiltreMedian;
 }
