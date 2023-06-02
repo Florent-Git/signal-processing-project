@@ -6,6 +6,15 @@ import static imageprocessing.NonLineaire.MorphoElementaire.dilatation;
 
 public class MorphoComplexe {
 
+    /**
+     * Réalise la dilatation géodésique de l'image conditionnellement au masque géodésique.
+     * Attention: à utiliser uniquement avec des images binaires !
+     *
+     * @param image            L'image d'origine.
+     * @param masqueGeodesique Le masque géodésique.
+     * @param nbIter           Le nombre d'itérations de dilatation géodésique à effectuer.
+     * @return L'image dilatée géodésiquement.
+     */
     public static int[][] dilatationGeodesique(int[][] image,int[][] masqueGeodesique, int nbIter) {
         int[][] dilatedImage = Arrays.copyOf(image, image.length);
 
@@ -23,6 +32,15 @@ public class MorphoComplexe {
         return dilatedImage;
     }
 
+    /**
+     * Réalise la reconstruction géodésique de l'image conditionnellement au masque géodésique.
+     * Utilise la méthode "dilatationGeodesique"
+     * Attention: à utiliser uniquement avec des images binaires !
+     *
+     * @param image            L'image d'origine.
+     * @param masqueGeodesique Le masque géodésique.
+     * @return L'image reconstruite géodésiquement.
+     */
     public static int[][] reconstructionGeodesique(int[][] image, int[][] masqueGeodesique) {
         int[][] reconstructedImage = Arrays.copyOf(image, image.length);
         boolean hasChanged = true;
@@ -43,6 +61,14 @@ public class MorphoComplexe {
         return reconstructedImage;
     }
 
+    /**
+     * Réalise le filtrage médian de l'image en niveaux de gris.
+     * Attention: à utiliser uniquement avec des images en niveau de gris !
+     *
+     * @param image        L'image d'origine.
+     * @param tailleMasque La taille du masque utilisé pour le filtrage.
+     * @return L'image filtrée médianement.
+     */
     public static int[][] filtreMedian(int[][] image, int tailleMasque) {
         int height = image.length;
         int width = image[0].length;

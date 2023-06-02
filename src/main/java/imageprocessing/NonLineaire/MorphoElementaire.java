@@ -2,6 +2,13 @@ package imageprocessing.NonLineaire;
 
 public class MorphoElementaire {
 
+    /**
+     * Réalise l'érosion de l'image.
+     *
+     * @param image        L'image d'origine.
+     * @param tailleMasque La taille du masque utilisé pour l'érosion.
+     * @return L'image érodée.
+     */
     public static int[][] erosion(int [][] image,int tailleMasque){
         int height = image.length;
         int width = image[0].length;
@@ -26,6 +33,13 @@ public class MorphoElementaire {
         return erosionResult;
     }
 
+    /**
+     * Réalise la dilatation de l'image.
+     *
+     * @param image        L'image d'origine.
+     * @param tailleMasque La taille du masque utilisé pour la dilatation.
+     * @return L'image dilatée.
+     */
     public static int[][] dilatation(int [][] image,int tailleMasque) {
         int height = image.length;
         int width = image[0].length;
@@ -50,11 +64,27 @@ public class MorphoElementaire {
         return dilatationResult;
     }
 
+    /**
+     * Réalise l'ouverture de l'image.
+     * Utilise une érosion suivie d'une dilatation
+     *
+     * @param image        L'image d'origine.
+     * @param tailleMasque La taille du masque utilisé pour l'ouverture.
+     * @return L'image ouverte.
+     */
     public static int[][] ouverture(int [][] image,int tailleMasque) {
         int[][] erosionResult = erosion(image, tailleMasque);
         return dilatation(erosionResult, tailleMasque);
     }
 
+    /**
+     * Réalise la fermeture de l'image.
+     * Utilise une dilatation suivie d'une érosion
+     *
+     * @param image        L'image d'origine.
+     * @param tailleMasque La taille du masque utilisé pour la fermeture.
+     * @return L'image fermée.
+     */
     public static int[][] fermeture(int [][] image,int tailleMasque) {
         int[][] dilatationResult = dilatation(image, tailleMasque);
         return erosion(dilatationResult, tailleMasque);
