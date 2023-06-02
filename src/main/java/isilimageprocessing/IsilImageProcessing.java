@@ -77,6 +77,8 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 
         // NON-LINEAR
         jMenuNonLineaire.setEnabled(false);
+        jMenuContour.setEnabled(false);
+        jMenuSeuillage.setEnabled(false);
     }
     
     /** This method is called from within the constructor to
@@ -266,6 +268,113 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             }
         });
         jMenuComplexe.add(jMenuItemFiltreMedian);
+
+        // Contours
+        jMenuContour = new JMenu();
+        jMenuContour.setText("Contours");
+        jMenuBar1.add(jMenuContour);
+        jMenuContourLineaire = new JMenu();
+        jMenuContourLineaire.setText("Lineaire");
+        jMenuContourNonLineaire = new JMenu();
+        jMenuContourNonLineaire.setText("Non-Lineaire");
+        jMenuContour.add(jMenuContourLineaire);
+        jMenuContour.add(jMenuContourNonLineaire);
+        jMenuItemPrewitt = new JMenuItem();
+        jMenuItemSobel = new JMenuItem();
+        jMenuItemLaplaceFour = new JMenuItem();
+        jMenuItemLaplaceEight = new JMenuItem();
+        jMenuItemGradErosion = new JMenuItem();
+        jMenuItemGradDilatation = new JMenuItem();
+        jMenuItemGradBeucher = new JMenuItem();
+        jMenuItemLaplaceNonLin = new JMenuItem();
+        jMenuContourLineaire.add(jMenuItemPrewitt);
+        jMenuContourLineaire.add(jMenuItemSobel);
+        jMenuContourLineaire.add(jMenuItemLaplaceFour);
+        jMenuContourLineaire.add(jMenuItemLaplaceEight);
+        jMenuContourNonLineaire.add(jMenuItemGradErosion);
+        jMenuContourNonLineaire.add(jMenuItemGradDilatation);
+        jMenuContourNonLineaire.add(jMenuItemGradBeucher);
+        jMenuContourNonLineaire.add(jMenuItemLaplaceNonLin);
+
+        jMenuItemPrewitt.setText("Prewitt");
+        jMenuItemSobel.setText("Sobel");
+        jMenuItemLaplaceFour.setText("Laplace 4");
+        jMenuItemLaplaceEight.setText("Laplace 8");
+        jMenuItemGradErosion.setText("Gradient d'erosion");
+        jMenuItemGradDilatation.setText("Gradient de dilatation");
+        jMenuItemGradBeucher.setText("Gradient de Beucher");
+        jMenuItemLaplaceNonLin.setText("Laplacien non lineaire");
+        jMenuItemPrewitt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPrewitt(evt);
+            }
+        });
+        jMenuItemSobel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSobel(evt);
+            }
+        });
+        jMenuItemLaplaceFour.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLaplaceFour(evt);
+            }
+        });
+        jMenuItemLaplaceEight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLaplaceEight(evt);
+            }
+        });
+        jMenuItemGradErosion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemGradErosion(evt);
+            }
+        });
+        jMenuItemGradDilatation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemGradDilatation(evt);
+            }
+        });
+        jMenuItemGradBeucher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemGradBeucher(evt);
+            }
+        });
+        jMenuItemLaplaceNonLin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLaplaceNonLin(evt);
+            }
+        });
+
+        // Seuillage
+        jMenuSeuillage = new JMenu();
+        jMenuSeuillage.setText("Seuillage");
+        jMenuBar1.add(jMenuSeuillage);
+        jMenuItemSeuiSimple = new JMenuItem();
+        jMenuItemSeuiDouble = new JMenuItem();
+        jMenuItemSeuiAuto = new JMenuItem();
+        jMenuSeuillage.add(jMenuItemSeuiSimple);
+        jMenuSeuillage.add(jMenuItemSeuiDouble);
+        jMenuSeuillage.add(jMenuItemSeuiAuto);
+
+        jMenuItemSeuiSimple.setText("Seuillage Simple");
+        jMenuItemSeuiDouble.setText("Seuillage Double");
+        jMenuItemSeuiAuto.setText("Seuillage Automatique");
+
+        jMenuItemSeuiSimple.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSeuiSimple(evt);
+            }
+        });
+        jMenuItemSeuiDouble.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSeuiDouble(evt);
+            }
+        });
+        jMenuItemSeuiAuto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSeuiAuto(evt);
+            }
+        });
 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -533,6 +642,8 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 
         jMenuLineaire.setEnabled(true);
         jMenuNonLineaire.setEnabled(true);
+        jMenuContour.setEnabled(true);
+        jMenuSeuillage.setEnabled(true);
     }
     
     private void activeMenusRGB()
@@ -989,6 +1100,138 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         }
     }
 
+    private void jMenuItemPrewitt(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemSobel(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemLaplaceFour(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemLaplaceEight(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemGradErosion(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemGradDilatation(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemGradBeucher(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemLaplaceNonLin(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemSeuiSimple(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemSeuiDouble(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
+    private void jMenuItemSeuiAuto(ActionEvent evt){
+        try
+        {
+            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex)
+        {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -1165,4 +1408,23 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private javax.swing.JMenuItem jMenuItemDilatationGeodesique;
     private javax.swing.JMenuItem jMenuItemReconstructionGeodesique;
     private javax.swing.JMenuItem jMenuItemFiltreMedian;
+
+    // Contours linéaires
+    private javax.swing.JMenu jMenuContour;
+    private javax.swing.JMenu jMenuContourLineaire;
+    private javax.swing.JMenu jMenuContourNonLineaire;
+    private javax.swing.JMenuItem jMenuItemPrewitt;
+    private javax.swing.JMenuItem jMenuItemSobel;
+    private javax.swing.JMenuItem jMenuItemLaplaceFour;
+    private javax.swing.JMenuItem jMenuItemLaplaceEight;
+    private javax.swing.JMenuItem jMenuItemGradErosion;
+    private javax.swing.JMenuItem jMenuItemGradDilatation;
+    private javax.swing.JMenuItem jMenuItemGradBeucher;
+    private javax.swing.JMenuItem jMenuItemLaplaceNonLin;
+
+    // Seuillage
+    private javax.swing.JMenu jMenuSeuillage;
+    private javax.swing.JMenuItem jMenuItemSeuiSimple;
+    private javax.swing.JMenuItem jMenuItemSeuiDouble;
+    private javax.swing.JMenuItem jMenuItemSeuiAuto;
 }
