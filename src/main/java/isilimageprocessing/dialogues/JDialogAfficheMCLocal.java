@@ -86,7 +86,6 @@ public class JDialogAfficheMCLocal extends JDialog {
         });
 
         // Créer un conteneur principal et ajouter les composants
-        JFrame frame = new JFrame();
         JPanel topPanel = new JPanel();
         JPanel convPanel = new JPanel();
         JPanel mainPanel = new JPanel();
@@ -122,11 +121,6 @@ public class JDialogAfficheMCLocal extends JDialog {
 
         // Obtenir le masque de convolution (par défaut, l'addition des éléments donne 1)
         double[][] masque = new double[tailleMasque][tailleMasque];
-        for (int i = 0; i < tailleMasque; i++) {
-            for (int j = 0; j < tailleMasque; j++) {
-                masque[i][j] = 1.0/(tailleMasque*tailleMasque);
-            }
-        }
 
         int offsetSpinner = (int)numberSpinnerTaille.getValue()/2;
         for (int i = -offsetSpinner + 4; i <= offsetSpinner + 4; i++) {
