@@ -1,22 +1,20 @@
-package isilimageprocessing.dialogues.Contours;
+package isilimageprocessing.dialogues.Contours.Lineaire;
 
 import cimage.CImageNG;
 import cimage.exceptions.CImageNGException;
 import cimage.observers.JLabelBeanCImage;
 import imageprocessing.Contours.ContoursLineaire;
-import imageprocessing.NonLineaire.MorphoElementaire;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class JDialogAffichePrewitt extends JDialog {
-    private final JSpinner numberSpinner;
+public class JDialogAfficheLaplace4 extends JDialog {
     private final int M, N;
     private CImageNG imageBare, imageTransf;
     private final JLabelBeanCImage observerBare, observerTransf;
     private final JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneTransf = new JScrollPane();
 
-    public JDialogAffichePrewitt(Frame parent, boolean modal, int[][] matrice, String titre) {
+    public JDialogAfficheLaplace4(Frame parent, boolean modal, int[][] matrice, String titre) {
         //super(parent, modal);
         setTitle(titre);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -37,9 +35,6 @@ public class JDialogAffichePrewitt extends JDialog {
         jScrollPaneBare.setViewportView(observerBare);
         jScrollPaneTransf.setViewportView(observerTransf);
 
-        // Créer le sélecteur de nombres entiers
-        numberSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 2, 1));
-
         // Créer un bouton pour afficher l'image sélectionnée
         JButton showImageButton = new JButton("Traiter l'image");
         showImageButton.addActionListener(e -> {
@@ -53,8 +48,6 @@ public class JDialogAffichePrewitt extends JDialog {
         // Créer un conteneur principal et ajouter les composants
         JPanel mainFrame = new JPanel();
         mainFrame.setLayout(new BoxLayout(mainFrame,BoxLayout.Y_AXIS));
-        mainFrame.add(new JLabel("Direction :"));
-        mainFrame.add(numberSpinner);
         mainFrame.add(jScrollPaneBare);
         mainFrame.add(showImageButton);
         mainFrame.add(jScrollPaneTransf);
@@ -66,17 +59,14 @@ public class JDialogAffichePrewitt extends JDialog {
     }
 
     private void displayImage() throws CImageNGException {
-        // Obtenir la valeur sélectionnée dans le sélecteur de nombres
-        int direction = (int) numberSpinner.getValue();
-
         // Obtenir l'image traitée
-        int[][] imageTraitee = ContoursLineaire.gradientPrewitt(imageBare.getMatrice(), direction);
+        int[][] imageTraitee = ContoursLineaire.laplacien4(imageBare.getMatrice());
 
         // Afficher l'image dans l'étiquette
         imageTransf.setMatrice(imageTraitee);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new JDialogAffichePrewitt(new JFrame(), true,null,null).setVisible(true));
+        SwingUtilities.invokeLater(() -> new JDialogAfficheLaplace4(new JFrame(), true,null,null).setVisible(true));
     }
 }

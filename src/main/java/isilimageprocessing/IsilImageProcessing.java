@@ -19,10 +19,14 @@ import java.awt.event.ActionEvent;
 import java.io.*;
 import javax.swing.*;
 
-import isilimageprocessing.dialogues.Contours.JDialogAfficheLaplace4;
-import isilimageprocessing.dialogues.Contours.JDialogAfficheLaplace8;
-import isilimageprocessing.dialogues.Contours.JDialogAffichePrewitt;
-import isilimageprocessing.dialogues.Contours.JDialogAfficheSobel;
+import isilimageprocessing.dialogues.Contours.Lineaire.JDialogAfficheLaplace4;
+import isilimageprocessing.dialogues.Contours.Lineaire.JDialogAfficheLaplace8;
+import isilimageprocessing.dialogues.Contours.Lineaire.JDialogAffichePrewitt;
+import isilimageprocessing.dialogues.Contours.Lineaire.JDialogAfficheSobel;
+import isilimageprocessing.dialogues.Contours.NonLineaire.JDialogAfficheGradBeucher;
+import isilimageprocessing.dialogues.Contours.NonLineaire.JDialogAfficheGradDilatation;
+import isilimageprocessing.dialogues.Contours.NonLineaire.JDialogAfficheGradErosion;
+import isilimageprocessing.dialogues.Contours.NonLineaire.JDialogAfficheLaplaceNonLin;
 import isilimageprocessing.dialogues.NonLinear.Complex.JDialogDilatationGeodesique;
 import isilimageprocessing.dialogues.NonLinear.Complex.JDialogFiltreMedian;
 import isilimageprocessing.dialogues.NonLinear.Complex.JDialogReconstructionGeodesique;
@@ -30,6 +34,9 @@ import isilimageprocessing.dialogues.NonLinear.Elementary.JDialogAfficheDilatati
 import isilimageprocessing.dialogues.NonLinear.Elementary.JDialogAfficheErosion;
 import isilimageprocessing.dialogues.NonLinear.Elementary.JDialogAfficheFermeture;
 import isilimageprocessing.dialogues.NonLinear.Elementary.JDialogAfficheOuverture;
+import isilimageprocessing.dialogues.Seuillage.JDialogAfficheSeuilAuto;
+import isilimageprocessing.dialogues.Seuillage.JDialogAfficheSeuilDouble;
+import isilimageprocessing.dialogues.Seuillage.JDialogAfficheSeuilSimple;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -1106,7 +1113,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemPrewitt(ActionEvent evt){
         try
         {
-            JDialogAffichePrewitt dialog = new JDialogAffichePrewitt(this,true, imageNG.getMatrice(),"Contours : Filtre Prewitt");
+            JDialogAffichePrewitt dialog = new JDialogAffichePrewitt(this,true, imageNG.getMatrice(),"Contours Lineaire: Filtre Prewitt");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1118,7 +1125,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemSobel(ActionEvent evt){
         try
         {
-            JDialogAfficheSobel dialog = new JDialogAfficheSobel(this,true, imageNG.getMatrice(),"Contours : Filtre Sobel");
+            JDialogAfficheSobel dialog = new JDialogAfficheSobel(this,true, imageNG.getMatrice(),"Contours Lineaire: Filtre Sobel");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1130,7 +1137,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemLaplace4(ActionEvent evt){
         try
         {
-            JDialogAfficheLaplace4 dialog = new JDialogAfficheLaplace4(this,true, imageNG.getMatrice(),"Contours : Laplace 4");
+            JDialogAfficheLaplace4 dialog = new JDialogAfficheLaplace4(this,true, imageNG.getMatrice(),"Contours Lineaire: Laplace 4");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1142,7 +1149,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemLaplace8(ActionEvent evt){
         try
         {
-            JDialogAfficheLaplace8 dialog = new JDialogAfficheLaplace8(this,true, imageNG.getMatrice(),"Contours : Laplace 8");
+            JDialogAfficheLaplace8 dialog = new JDialogAfficheLaplace8(this,true, imageNG.getMatrice(),"Contours Lineaire: Laplace 8");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1154,7 +1161,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemGradErosion(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAfficheGradErosion dialog = new JDialogAfficheGradErosion(this,true, imageNG.getMatrice(),"Contours Non-Lineaire: Gradient Erosion");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1166,7 +1173,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemGradDilatation(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAfficheGradDilatation dialog = new JDialogAfficheGradDilatation(this,true, imageNG.getMatrice(),"Contours Non-Lineaire: Gradient Dilatation");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1178,7 +1185,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemGradBeucher(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAfficheGradBeucher dialog = new JDialogAfficheGradBeucher(this,true, imageNG.getMatrice(),"Contours Non-Lineaire: Gradient Beucher");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1190,7 +1197,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemLaplaceNonLin(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAfficheLaplaceNonLin dialog = new JDialogAfficheLaplaceNonLin(this,true, imageNG.getMatrice(),"Contours Non-Lineaire: Laplace Non Lineaire");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1202,7 +1209,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemSeuiSimple(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAfficheSeuilSimple dialog = new JDialogAfficheSeuilSimple(this,true, imageNG.getMatrice(),"Seuillage : Simple");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1214,7 +1221,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemSeuiDouble(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAfficheSeuilDouble dialog = new JDialogAfficheSeuilDouble(this,true, imageNG.getMatrice(),"Seuillage : Double");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1226,7 +1233,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemSeuiAuto(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAfficheSeuilAuto dialog = new JDialogAfficheSeuilAuto(this,true, imageNG.getMatrice(),"Seuillage : Automatique");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)

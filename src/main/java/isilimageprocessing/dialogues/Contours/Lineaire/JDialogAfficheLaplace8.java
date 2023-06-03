@@ -1,4 +1,4 @@
-package isilimageprocessing.dialogues.Contours;
+package isilimageprocessing.dialogues.Contours.Lineaire;
 
 import cimage.CImageNG;
 import cimage.exceptions.CImageNGException;
@@ -8,13 +8,13 @@ import imageprocessing.Contours.ContoursLineaire;
 import javax.swing.*;
 import java.awt.*;
 
-public class JDialogAfficheLaplace4 extends JDialog {
+public class JDialogAfficheLaplace8 extends JDialog {
     private final int M, N;
     private CImageNG imageBare, imageTransf;
     private final JLabelBeanCImage observerBare, observerTransf;
     private final JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneTransf = new JScrollPane();
 
-    public JDialogAfficheLaplace4(Frame parent, boolean modal, int[][] matrice, String titre) {
+    public JDialogAfficheLaplace8(Frame parent, boolean modal, int[][] matrice, String titre) {
         //super(parent, modal);
         setTitle(titre);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -60,13 +60,13 @@ public class JDialogAfficheLaplace4 extends JDialog {
 
     private void displayImage() throws CImageNGException {
         // Obtenir l'image traitée
-        int[][] imageTraitee = ContoursLineaire.laplacien4(imageBare.getMatrice());
+        int[][] imageTraitee = ContoursLineaire.laplacien8(imageBare.getMatrice());
 
         // Afficher l'image dans l'étiquette
         imageTransf.setMatrice(imageTraitee);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new JDialogAfficheLaplace4(new JFrame(), true,null,null).setVisible(true));
+        SwingUtilities.invokeLater(() -> new JDialogAfficheLaplace8(new JFrame(), true,null,null).setVisible(true));
     }
 }

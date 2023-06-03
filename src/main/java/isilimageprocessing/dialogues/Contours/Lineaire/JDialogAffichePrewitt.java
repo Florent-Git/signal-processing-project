@@ -1,4 +1,4 @@
-package isilimageprocessing.dialogues.Contours;
+package isilimageprocessing.dialogues.Contours.Lineaire;
 
 import cimage.CImageNG;
 import cimage.exceptions.CImageNGException;
@@ -8,14 +8,14 @@ import imageprocessing.Contours.ContoursLineaire;
 import javax.swing.*;
 import java.awt.*;
 
-public class JDialogAfficheSobel extends JDialog {
+public class JDialogAffichePrewitt extends JDialog {
     private final JSpinner numberSpinner;
     private final int M, N;
     private CImageNG imageBare, imageTransf;
     private final JLabelBeanCImage observerBare, observerTransf;
     private final JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneTransf = new JScrollPane();
 
-    public JDialogAfficheSobel(Frame parent, boolean modal, int[][] matrice, String titre) {
+    public JDialogAffichePrewitt(Frame parent, boolean modal, int[][] matrice, String titre) {
         //super(parent, modal);
         setTitle(titre);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -69,13 +69,13 @@ public class JDialogAfficheSobel extends JDialog {
         int direction = (int) numberSpinner.getValue();
 
         // Obtenir l'image traitée
-        int[][] imageTraitee = ContoursLineaire.gradientSobel(imageBare.getMatrice(), direction);
+        int[][] imageTraitee = ContoursLineaire.gradientPrewitt(imageBare.getMatrice(), direction);
 
         // Afficher l'image dans l'étiquette
         imageTransf.setMatrice(imageTraitee);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new JDialogAfficheSobel(new JFrame(), true,null,null).setVisible(true));
+        SwingUtilities.invokeLater(() -> new JDialogAffichePrewitt(new JFrame(), true,null,null).setVisible(true));
     }
 }
