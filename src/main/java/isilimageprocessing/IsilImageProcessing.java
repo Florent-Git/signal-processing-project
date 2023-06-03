@@ -13,13 +13,16 @@ import cimage.observers.events.*;
 import imageprocessing.Complexe.MatriceComplexe;
 import imageprocessing.Fourier.Fourier;
 import imageprocessing.Histogramme.Histogramme;
-import imageprocessing.Lineaire.FiltrageLineaireGlobal;
 import isilimageprocessing.dialogues.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import javax.swing.*;
 
+import isilimageprocessing.dialogues.Contours.JDialogAfficheLaplace4;
+import isilimageprocessing.dialogues.Contours.JDialogAfficheLaplace8;
+import isilimageprocessing.dialogues.Contours.JDialogAffichePrewitt;
+import isilimageprocessing.dialogues.Contours.JDialogAfficheSobel;
 import isilimageprocessing.dialogues.NonLinear.Complex.JDialogDilatationGeodesique;
 import isilimageprocessing.dialogues.NonLinear.Complex.JDialogFiltreMedian;
 import isilimageprocessing.dialogues.NonLinear.Complex.JDialogReconstructionGeodesique;
@@ -281,16 +284,16 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuContour.add(jMenuContourNonLineaire);
         jMenuItemPrewitt = new JMenuItem();
         jMenuItemSobel = new JMenuItem();
-        jMenuItemLaplaceFour = new JMenuItem();
-        jMenuItemLaplaceEight = new JMenuItem();
+        jMenuItemLaplace4 = new JMenuItem();
+        jMenuItemLaplace8 = new JMenuItem();
         jMenuItemGradErosion = new JMenuItem();
         jMenuItemGradDilatation = new JMenuItem();
         jMenuItemGradBeucher = new JMenuItem();
         jMenuItemLaplaceNonLin = new JMenuItem();
         jMenuContourLineaire.add(jMenuItemPrewitt);
         jMenuContourLineaire.add(jMenuItemSobel);
-        jMenuContourLineaire.add(jMenuItemLaplaceFour);
-        jMenuContourLineaire.add(jMenuItemLaplaceEight);
+        jMenuContourLineaire.add(jMenuItemLaplace4);
+        jMenuContourLineaire.add(jMenuItemLaplace8);
         jMenuContourNonLineaire.add(jMenuItemGradErosion);
         jMenuContourNonLineaire.add(jMenuItemGradDilatation);
         jMenuContourNonLineaire.add(jMenuItemGradBeucher);
@@ -298,8 +301,8 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 
         jMenuItemPrewitt.setText("Prewitt");
         jMenuItemSobel.setText("Sobel");
-        jMenuItemLaplaceFour.setText("Laplace 4");
-        jMenuItemLaplaceEight.setText("Laplace 8");
+        jMenuItemLaplace4.setText("Laplace 4");
+        jMenuItemLaplace8.setText("Laplace 8");
         jMenuItemGradErosion.setText("Gradient d'erosion");
         jMenuItemGradDilatation.setText("Gradient de dilatation");
         jMenuItemGradBeucher.setText("Gradient de Beucher");
@@ -314,14 +317,14 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
                 jMenuItemSobel(evt);
             }
         });
-        jMenuItemLaplaceFour.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemLaplace4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemLaplaceFour(evt);
+                jMenuItemLaplace4(evt);
             }
         });
-        jMenuItemLaplaceEight.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemLaplace8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemLaplaceEight(evt);
+                jMenuItemLaplace8(evt);
             }
         });
         jMenuItemGradErosion.addActionListener(new java.awt.event.ActionListener() {
@@ -1103,7 +1106,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemPrewitt(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAffichePrewitt dialog = new JDialogAffichePrewitt(this,true, imageNG.getMatrice(),"Contours : Filtre Prewitt");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1115,7 +1118,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private void jMenuItemSobel(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAfficheSobel dialog = new JDialogAfficheSobel(this,true, imageNG.getMatrice(),"Contours : Filtre Sobel");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1124,10 +1127,10 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         }
     }
 
-    private void jMenuItemLaplaceFour(ActionEvent evt){
+    private void jMenuItemLaplace4(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAfficheLaplace4 dialog = new JDialogAfficheLaplace4(this,true, imageNG.getMatrice(),"Contours : Laplace 4");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1136,10 +1139,10 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         }
     }
 
-    private void jMenuItemLaplaceEight(ActionEvent evt){
+    private void jMenuItemLaplace8(ActionEvent evt){
         try
         {
-            JDialogFiltreMedian dialog = new JDialogFiltreMedian(this,true, imageNG.getMatrice(),"Non-Lineaire Complexe : Filtre Median");
+            JDialogAfficheLaplace8 dialog = new JDialogAfficheLaplace8(this,true, imageNG.getMatrice(),"Contours : Laplace 8");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex)
@@ -1415,8 +1418,8 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private javax.swing.JMenu jMenuContourNonLineaire;
     private javax.swing.JMenuItem jMenuItemPrewitt;
     private javax.swing.JMenuItem jMenuItemSobel;
-    private javax.swing.JMenuItem jMenuItemLaplaceFour;
-    private javax.swing.JMenuItem jMenuItemLaplaceEight;
+    private javax.swing.JMenuItem jMenuItemLaplace4;
+    private javax.swing.JMenuItem jMenuItemLaplace8;
     private javax.swing.JMenuItem jMenuItemGradErosion;
     private javax.swing.JMenuItem jMenuItemGradDilatation;
     private javax.swing.JMenuItem jMenuItemGradBeucher;
