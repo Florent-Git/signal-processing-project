@@ -1,4 +1,4 @@
-package isilimageprocessing.dialogues;
+package isilimageprocessing.dialogues.Histogramme;
 
 import cimage.CImageNG;
 import cimage.exceptions.CImageNGException;
