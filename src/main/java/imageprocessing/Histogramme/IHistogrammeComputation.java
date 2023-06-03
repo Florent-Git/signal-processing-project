@@ -1,6 +1,6 @@
 package imageprocessing.Histogramme;
 
-public interface IHistogramme {
+public interface IHistogrammeComputation {
     int minimum(int[][] image);
     int maximum(int[][] image);
     int luminance(int[][] image);

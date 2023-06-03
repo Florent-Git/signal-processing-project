@@ -15,6 +15,7 @@ import imageprocessing.Fourier.Fourier;
 import imageprocessing.Histogramme.Histogramme;
 import isilimageprocessing.dialogues.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.*;
 import javax.swing.*;
 import org.jfree.chart.ChartFactory;
@@ -102,6 +103,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuItemFourierAfficherPartieImaginaire = new javax.swing.JMenuItem();
         jMenuHistogramme = new javax.swing.JMenu();
         jMenuHistogrammeAfficher = new javax.swing.JMenuItem();
+        jMenuHistogrammeParametres = new JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TestCImage3");
@@ -300,7 +302,13 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
             }
         });
 
+        jMenuHistogrammeParametres.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/report_32_hot.jpg")));
+        jMenuHistogrammeParametres.setText("Paramètres");
+
+        jMenuHistogrammeParametres.addActionListener(this::jMenuHistogrammeParametresActionPerformed);
+
         jMenuHistogramme.add(jMenuHistogrammeAfficher);
+        jMenuHistogramme.add(jMenuHistogrammeParametres);
 
         jMenuBar1.add(jMenuHistogramme);
 
@@ -324,6 +332,8 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         );
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-500)/2, (screenSize.height-400)/2, 500, 400);
+
+
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuHistogrammeAfficherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuHistogrammeAfficherActionPerformed
@@ -358,6 +368,16 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         frame.pack();
         frame.setVisible(true);
     }//GEN-LAST:event_jMenuHistogrammeAfficherActionPerformed
+
+    private void jMenuHistogrammeParametresActionPerformed(ActionEvent evt) {
+        try {
+            var dialog = new JDialogAfficheParametresHistogramme(this,true, imageNG.getMatrice(),"Paramètres Histogramme");
+            dialog.setVisible(true);
+        }
+        catch (CImageNGException ex) {
+            System.out.println("Erreur CImageNG : " + ex.getMessage());
+        }
+    }
 
     private void activeMenusNG()
     {
@@ -795,6 +815,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private javax.swing.JMenu jMenuFourierAfficher;
     private javax.swing.JMenu jMenuHistogramme;
     private javax.swing.JMenuItem jMenuHistogrammeAfficher;
+    private JMenuItem jMenuHistogrammeParametres;
     private javax.swing.JMenu jMenuImage;
     private javax.swing.JMenuItem jMenuItemCouleurPinceau;
     private javax.swing.JMenuItem jMenuItemEnregistrerSous;

@@ -13,7 +13,7 @@ package imageprocessing.Histogramme;
  *
  * @author Jean-Marc
  */
-public class Histogramme implements IHistogramme
+public class Histogramme implements IHistogrammeComputation
 {
     public static int[] Histogramme256(int mat[][]) {
         int M = mat.length;

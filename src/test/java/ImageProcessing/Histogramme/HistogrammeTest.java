@@ -1,14 +1,14 @@
 package ImageProcessing.Histogramme;
 
 import imageprocessing.Histogramme.Histogramme;
-import imageprocessing.Histogramme.IHistogramme;
+import imageprocessing.Histogramme.IHistogrammeComputation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HistogrammeTest {
-    private IHistogramme histogramme;
+    private IHistogrammeComputation histogramme;
 
     @BeforeEach
     public void setup() {
