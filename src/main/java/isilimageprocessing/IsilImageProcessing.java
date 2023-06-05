@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.io.*;
 import javax.swing.*;
 
+import isilimageprocessing.dialogues.Applications.*;
 import isilimageprocessing.dialogues.Histogramme.*;
 import isilimageprocessing.dialogues.Contours.Lineaire.JDialogAfficheLaplace4;
 import isilimageprocessing.dialogues.Contours.Lineaire.JDialogAfficheLaplace8;
@@ -28,6 +29,12 @@ import isilimageprocessing.dialogues.Contours.NonLineaire.JDialogAfficheGradBeuc
 import isilimageprocessing.dialogues.Contours.NonLineaire.JDialogAfficheGradDilatation;
 import isilimageprocessing.dialogues.Contours.NonLineaire.JDialogAfficheGradErosion;
 import isilimageprocessing.dialogues.Contours.NonLineaire.JDialogAfficheLaplaceNonLin;
+import isilimageprocessing.dialogues.Lineaire.Global.JDialogAffichePBBWGlobal;
+import isilimageprocessing.dialogues.Lineaire.Global.JDialogAffichePBIGlobal;
+import isilimageprocessing.dialogues.Lineaire.Global.JDialogAffichePHBWGlobal;
+import isilimageprocessing.dialogues.Lineaire.Global.JDialogAffichePHIGlobal;
+import isilimageprocessing.dialogues.Lineaire.Local.JDialogAfficheMCLocal;
+import isilimageprocessing.dialogues.Lineaire.Local.JDialogAfficheMYLocal;
 import isilimageprocessing.dialogues.NonLinear.Complex.JDialogDilatationGeodesique;
 import isilimageprocessing.dialogues.NonLinear.Complex.JDialogFiltreMedian;
 import isilimageprocessing.dialogues.NonLinear.Complex.JDialogReconstructionGeodesique;
@@ -82,6 +89,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuFourier.setEnabled(false);
         jMenuHistogramme.setEnabled(false);
         jMenuLineaire.setEnabled(false);
+        jMenuApplications.setEnabled(true);
         
         couleurPinceauRGB = Color.BLACK;
         couleurPinceauNG = 0;
@@ -389,6 +397,69 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         jMenuItemSeuiAuto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemSeuiAuto(evt);
+            }
+        });
+
+
+        /*APPLICATIONS*/
+        jMenuApplications = new JMenu();
+        jMenuApplications.setText("Applications");
+        jMenuBar1.add(jMenuApplications);
+        jMenuItemLenaBruit = new JMenuItem();
+        jMenuItemLenaAEgaliser = new JMenuItem();
+        jMenuItemPetitsPois = new JMenuItem();
+        jMenuItemBalanes = new JMenuItem();
+        jMenuItemTools = new JMenuItem();
+        jMenuItemVaisseaux = new JMenuItem();
+        jMenuItemTartines = new JMenuItem();
+        jMenuApplications.add(jMenuItemLenaBruit);
+        jMenuApplications.add(jMenuItemLenaAEgaliser);
+        jMenuApplications.add(jMenuItemPetitsPois);
+        jMenuApplications.add(jMenuItemBalanes);
+        jMenuApplications.add(jMenuItemTools);
+        jMenuApplications.add(jMenuItemVaisseaux);
+        jMenuApplications.add(jMenuItemTartines);
+        jMenuItemLenaBruit.setText("Lena Bruit");
+        jMenuItemLenaAEgaliser.setText("Lena a Egaliser");
+        jMenuItemPetitsPois.setText("Petits pois");
+        jMenuItemBalanes.setText("Balanes");
+        jMenuItemTools.setText("Tools");
+        jMenuItemVaisseaux.setText("Vaisseaux");
+        jMenuItemTartines.setText("Tartines");
+
+        jMenuItemLenaBruit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLenaBruit(evt);
+            }
+        });
+        jMenuItemLenaAEgaliser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemLenaAEgaliser(evt);
+            }
+        });
+        jMenuItemPetitsPois.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPetitsPois(evt);
+            }
+        });
+        jMenuItemBalanes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemBalanes(evt);
+            }
+        });
+        jMenuItemTools.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemTools(evt);
+            }
+        });
+        jMenuItemVaisseaux.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemVaisseaux(evt);
+            }
+        });
+        jMenuItemTartines.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemTartines(evt);
             }
         });
 
@@ -910,7 +981,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         JFileChooser choix = new JFileChooser();
 	File fichier;
 			
-	choix.setCurrentDirectory(new File ("."));
+	choix.setCurrentDirectory(new File ("./src/main/resources"));
 	if (choix.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 	{
             fichier = choix.getSelectedFile();
@@ -1015,7 +1086,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         JFileChooser choix = new JFileChooser();
 	File fichier;
 			
-	choix.setCurrentDirectory(new File ("."));
+	choix.setCurrentDirectory(new File ("./src/main/resources"));
 	if (choix.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 	{
             fichier = choix.getSelectedFile();
@@ -1326,6 +1397,41 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         }
     }
 
+    private void jMenuItemLenaBruit(ActionEvent evt){
+        JDialogLenaBruit dialog = new JDialogLenaBruit(this,true,"Applications : Lena Bruit");
+        dialog.setVisible(true);
+    }
+
+    private void jMenuItemLenaAEgaliser(ActionEvent evt){
+        JDialogLenaAEgaliser dialog = new JDialogLenaAEgaliser(this,true,"Applications : Lena a egaliser");
+        dialog.setVisible(true);
+    }
+
+    private void jMenuItemPetitsPois(ActionEvent evt){
+        JDialogPetitsPois dialog = new JDialogPetitsPois(this,true,"Applications : Petits pois");
+        dialog.setVisible(true);
+    }
+
+    private void jMenuItemBalanes(ActionEvent evt){
+        JDialogBalanes dialog = new JDialogBalanes(this,true,"Applications : Balanes");
+        dialog.setVisible(true);
+    }
+
+    private void jMenuItemTools(ActionEvent evt){
+        JDialogTools dialog = new JDialogTools(this,true,"Applications : Tools");
+        dialog.setVisible(true);
+    }
+
+    private void jMenuItemVaisseaux(ActionEvent evt){
+        JDialogVaisseaux dialog = new JDialogVaisseaux(this,true,"Applications : Vaisseaux");
+        dialog.setVisible(true);
+    }
+
+    private void jMenuItemTartines(ActionEvent evt){
+        JDialogTartines dialog = new JDialogTartines(this,true,"Applications : Tartines");
+        dialog.setVisible(true);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -1526,4 +1632,14 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
     private javax.swing.JMenuItem jMenuItemSeuiSimple;
     private javax.swing.JMenuItem jMenuItemSeuiDouble;
     private javax.swing.JMenuItem jMenuItemSeuiAuto;
+
+    // Applications
+    private javax.swing.JMenu jMenuApplications;
+    private javax.swing.JMenuItem jMenuItemLenaBruit;
+    private javax.swing.JMenuItem jMenuItemLenaAEgaliser;
+    private javax.swing.JMenuItem jMenuItemPetitsPois;
+    private javax.swing.JMenuItem jMenuItemBalanes;
+    private javax.swing.JMenuItem jMenuItemTools;
+    private javax.swing.JMenuItem jMenuItemVaisseaux;
+    private javax.swing.JMenuItem jMenuItemTartines;
 }

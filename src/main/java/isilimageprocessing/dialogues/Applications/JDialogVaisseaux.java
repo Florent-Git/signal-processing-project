@@ -1,4 +1,4 @@
-package isilimageprocessing.dialogues;
+package isilimageprocessing.dialogues.Applications;
 
 import cimage.CImageNG;
 import cimage.exceptions.CImageNGException;
@@ -9,30 +9,34 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
-public class JDialogAffichePBBWGlobal extends JDialog {
+public class JDialogVaisseaux extends JDialog {
     private JLabel imageLabel;
-    private JSpinner numberSpinnerFc, numberSpinnerOrdre;
+    private JSpinner numberSpinner;
     private int M, N;
     private CImageNG imageBare, imageTransf;
     private JLabelBeanCImage observerBare, observerTransf;
     private JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneTransf = new JScrollPane();
 
-    public JDialogAffichePBBWGlobal(Frame parent, boolean modal, int matrice[][], String titre) {
+    public JDialogVaisseaux(Frame parent, boolean modal, String titre) {
         //super(parent, modal);
         setTitle(titre);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        M = matrice.length;
-        N = matrice[0].length;
+        M = 800;
+        N = 600;
         try
         {
-            imageBare = new CImageNG(M,N,0);
+            imageBare = new CImageNG(new File(getClass().getClassLoader().getResource("images_step_5/vaisseaux.jpg").toURI()));
             imageTransf = new CImageNG(M,N, 255);
-            imageBare.setMatrice(matrice);
         }
-        catch (CImageNGException ex)
-        { System.out.println("Erreur CImageNG : " + ex.getMessage()); }
+        catch (CImageNGException | URISyntaxException ex)
+        { System.out.println("Erreur CImageNG : " + ex.getMessage()); } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         observerBare = new JLabelBeanCImage(imageBare);
         observerTransf = new JLabelBeanCImage(imageTransf);
@@ -40,9 +44,7 @@ public class JDialogAffichePBBWGlobal extends JDialog {
         jScrollPaneTransf.setViewportView(observerTransf);
 
         // Créer le sélecteur de nombres entiers
-        numberSpinnerFc = new JSpinner(new SpinnerNumberModel(15, 15, 255, 1));
-        numberSpinnerOrdre = new JSpinner(new SpinnerNumberModel(1, 1, 255, 1));
-
+        numberSpinner = new JSpinner(new SpinnerNumberModel(15, 15, 255, 1));
 
         // Créer un bouton pour afficher l'image sélectionnée
         JButton showImageButton = new JButton("Traiter l'image");
@@ -61,9 +63,7 @@ public class JDialogAffichePBBWGlobal extends JDialog {
         JPanel mainFrame = new JPanel();
         mainFrame.setLayout(new BoxLayout(mainFrame,BoxLayout.Y_AXIS));
         mainFrame.add(new JLabel("Frequence de coupure :"));
-        mainFrame.add(numberSpinnerFc);
-        mainFrame.add(new JLabel("Ordre du filtre :"));
-        mainFrame.add(numberSpinnerOrdre);
+        mainFrame.add(numberSpinner);
         mainFrame.add(jScrollPaneBare);
         mainFrame.add(showImageButton);
         mainFrame.add(jScrollPaneTransf);
@@ -76,11 +76,10 @@ public class JDialogAffichePBBWGlobal extends JDialog {
 
     private void displayImage() throws CImageNGException {
         // Obtenir la valeur sélectionnée dans le sélecteur de nombres
-        int freqCoup = (int) numberSpinnerFc.getValue();
-        int ordre = (int) numberSpinnerOrdre.getValue();
+        int freqCoup = (int) numberSpinner.getValue();
 
         // Obtenir l'image traitée
-        int[][] imageTraitee = FiltrageLineaireGlobal.filtrePasseBasButterworth(imageBare.getMatrice(), freqCoup, ordre);
+        int[][] imageTraitee = FiltrageLineaireGlobal.filtrePasseBasIdeal(imageBare.getMatrice(), freqCoup);
 
         // Afficher l'image dans l'étiquette
         imageTransf.setMatrice(imageTraitee);
@@ -90,7 +89,7 @@ public class JDialogAffichePBBWGlobal extends JDialog {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new JDialogAffichePBBWGlobal(new JFrame(), true,null,null).setVisible(true);
+                new JDialogVaisseaux(new JFrame(), true,null).setVisible(true);
             }
         });
     }

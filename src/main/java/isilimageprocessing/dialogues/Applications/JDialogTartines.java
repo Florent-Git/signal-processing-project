@@ -1,38 +1,42 @@
-package isilimageprocessing.dialogues;
+package isilimageprocessing.dialogues.Applications;
 
 import cimage.CImageNG;
 import cimage.exceptions.CImageNGException;
 import cimage.observers.JLabelBeanCImage;
-import imageprocessing.Lineaire.FiltrageLineaireLocal;
+import imageprocessing.Lineaire.FiltrageLineaireGlobal;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
-public class JDialogAfficheMYLocal extends JDialog {
+public class JDialogTartines extends JDialog {
     private JLabel imageLabel;
-    private JSpinner numberSpinnerTaille;
+    private JSpinner numberSpinner;
     private int M, N;
     private CImageNG imageBare, imageTransf;
     private JLabelBeanCImage observerBare, observerTransf;
     private JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneTransf = new JScrollPane();
 
-    public JDialogAfficheMYLocal(Frame parent, boolean modal, int matrice[][], String titre) {
+    public JDialogTartines(Frame parent, boolean modal, String titre) {
         //super(parent, modal);
         setTitle(titre);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        M = matrice.length;
-        N = matrice[0].length;
+        M = 800;
+        N = 600;
         try
         {
-            imageBare = new CImageNG(M,N,0);
+            imageBare = new CImageNG(new File(getClass().getClassLoader().getResource("images_step_5/Tartines.jpg").toURI()));
             imageTransf = new CImageNG(M,N, 255);
-            imageBare.setMatrice(matrice);
         }
-        catch (CImageNGException ex)
-        { System.out.println("Erreur CImageNG : " + ex.getMessage()); }
+        catch (CImageNGException | URISyntaxException ex)
+        { System.out.println("Erreur CImageNG : " + ex.getMessage()); } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         observerBare = new JLabelBeanCImage(imageBare);
         observerTransf = new JLabelBeanCImage(imageTransf);
@@ -40,7 +44,7 @@ public class JDialogAfficheMYLocal extends JDialog {
         jScrollPaneTransf.setViewportView(observerTransf);
 
         // Créer le sélecteur de nombres entiers
-        numberSpinnerTaille = new JSpinner(new SpinnerNumberModel(1, 1, 85, 2));
+        numberSpinner = new JSpinner(new SpinnerNumberModel(15, 15, 255, 1));
 
         // Créer un bouton pour afficher l'image sélectionnée
         JButton showImageButton = new JButton("Traiter l'image");
@@ -58,8 +62,8 @@ public class JDialogAfficheMYLocal extends JDialog {
         // Créer un conteneur principal et ajouter les composants
         JPanel mainFrame = new JPanel();
         mainFrame.setLayout(new BoxLayout(mainFrame,BoxLayout.Y_AXIS));
-        mainFrame.add(new JLabel("Taille du masque :"));
-        mainFrame.add(numberSpinnerTaille);
+        mainFrame.add(new JLabel("Frequence de coupure :"));
+        mainFrame.add(numberSpinner);
         mainFrame.add(jScrollPaneBare);
         mainFrame.add(showImageButton);
         mainFrame.add(jScrollPaneTransf);
@@ -72,10 +76,10 @@ public class JDialogAfficheMYLocal extends JDialog {
 
     private void displayImage() throws CImageNGException {
         // Obtenir la valeur sélectionnée dans le sélecteur de nombres
-        int tailleMasque = (int) numberSpinnerTaille.getValue();
+        int freqCoup = (int) numberSpinner.getValue();
 
         // Obtenir l'image traitée
-        int[][] imageTraitee = FiltrageLineaireLocal.filtreMoyenneur(imageBare.getMatrice(), tailleMasque);
+        int[][] imageTraitee = FiltrageLineaireGlobal.filtrePasseBasIdeal(imageBare.getMatrice(), freqCoup);
 
         // Afficher l'image dans l'étiquette
         imageTransf.setMatrice(imageTraitee);
@@ -85,7 +89,7 @@ public class JDialogAfficheMYLocal extends JDialog {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new JDialogAfficheMYLocal(new JFrame(), true,null,null).setVisible(true);
+                new JDialogTartines(new JFrame(), true,null).setVisible(true);
             }
         });
     }

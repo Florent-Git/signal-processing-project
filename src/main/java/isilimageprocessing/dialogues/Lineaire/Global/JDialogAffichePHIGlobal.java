@@ -1,4 +1,4 @@
-package isilimageprocessing.dialogues;
+package isilimageprocessing.dialogues.Lineaire.Global;
 
 import cimage.CImageNG;
 import cimage.exceptions.CImageNGException;
@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class JDialogAffichePBIGlobal extends JDialog {
+public class JDialogAffichePHIGlobal extends JDialog {
     private JLabel imageLabel;
     private JSpinner numberSpinner;
     private int M, N;
@@ -18,7 +18,7 @@ public class JDialogAffichePBIGlobal extends JDialog {
     private JLabelBeanCImage observerBare, observerTransf;
     private JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneTransf = new JScrollPane();
 
-    public JDialogAffichePBIGlobal(Frame parent, boolean modal, int matrice[][], String titre) {
+    public JDialogAffichePHIGlobal(Frame parent, boolean modal, int matrice[][], String titre) {
         //super(parent, modal);
         setTitle(titre);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -75,7 +75,7 @@ public class JDialogAffichePBIGlobal extends JDialog {
         int freqCoup = (int) numberSpinner.getValue();
 
         // Obtenir l'image traitée
-        int[][] imageTraitee = FiltrageLineaireGlobal.filtrePasseBasIdeal(imageBare.getMatrice(), freqCoup);
+        int[][] imageTraitee = FiltrageLineaireGlobal.filtrePasseHautIdeal(imageBare.getMatrice(), freqCoup);
 
         // Afficher l'image dans l'étiquette
         imageTransf.setMatrice(imageTraitee);
@@ -85,7 +85,7 @@ public class JDialogAffichePBIGlobal extends JDialog {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new JDialogAffichePBIGlobal(new javax.swing.JFrame(), true,null,null).setVisible(true);
+                new JDialogAffichePHIGlobal(new javax.swing.JFrame(), true,null,null).setVisible(true);
             }
         });
     }

@@ -1,4 +1,4 @@
-package isilimageprocessing.dialogues;
+package isilimageprocessing.dialogues.Applications;
 
 import cimage.CImageNG;
 import cimage.exceptions.CImageNGException;
@@ -9,8 +9,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
-public class JDialogAffichePHIGlobal extends JDialog {
+public class JDialogLenaAEgaliser extends JDialog {
     private JLabel imageLabel;
     private JSpinner numberSpinner;
     private int M, N;
@@ -18,21 +21,22 @@ public class JDialogAffichePHIGlobal extends JDialog {
     private JLabelBeanCImage observerBare, observerTransf;
     private JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneTransf = new JScrollPane();
 
-    public JDialogAffichePHIGlobal(Frame parent, boolean modal, int matrice[][], String titre) {
+    public JDialogLenaAEgaliser(Frame parent, boolean modal, String titre) {
         //super(parent, modal);
         setTitle(titre);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        M = matrice.length;
-        N = matrice[0].length;
+        M = 256;
+        N = 256;
         try
         {
-            imageBare = new CImageNG(M,N,0);
+            imageBare = new CImageNG(new File(getClass().getClassLoader().getResource("images_step_5/lenaAEgaliser.jpg").toURI()));
             imageTransf = new CImageNG(M,N, 255);
-            imageBare.setMatrice(matrice);
         }
-        catch (CImageNGException ex)
-        { System.out.println("Erreur CImageNG : " + ex.getMessage()); }
+        catch (CImageNGException | URISyntaxException ex)
+        { System.out.println("Erreur CImageNG : " + ex.getMessage()); } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         observerBare = new JLabelBeanCImage(imageBare);
         observerTransf = new JLabelBeanCImage(imageTransf);
@@ -75,7 +79,7 @@ public class JDialogAffichePHIGlobal extends JDialog {
         int freqCoup = (int) numberSpinner.getValue();
 
         // Obtenir l'image traitée
-        int[][] imageTraitee = FiltrageLineaireGlobal.filtrePasseHautIdeal(imageBare.getMatrice(), freqCoup);
+        int[][] imageTraitee = FiltrageLineaireGlobal.filtrePasseBasIdeal(imageBare.getMatrice(), freqCoup);
 
         // Afficher l'image dans l'étiquette
         imageTransf.setMatrice(imageTraitee);
@@ -85,7 +89,7 @@ public class JDialogAffichePHIGlobal extends JDialog {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new JDialogAffichePHIGlobal(new javax.swing.JFrame(), true,null,null).setVisible(true);
+                new JDialogLenaAEgaliser(new JFrame(), true,null).setVisible(true);
             }
         });
     }
