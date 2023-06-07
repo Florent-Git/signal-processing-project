@@ -3,7 +3,10 @@ package isilimageprocessing.dialogues.Applications;
 import cimage.CImageNG;
 import cimage.exceptions.CImageNGException;
 import cimage.observers.JLabelBeanCImage;
-import imageprocessing.Lineaire.FiltrageLineaireGlobal;
+import imageprocessing.Contours.ContoursNonLineaire;
+import imageprocessing.NonLineaire.MorphoComplexe;
+import imageprocessing.NonLineaire.MorphoElementaire;
+import imageprocessing.Seuillage.Seuillage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,11 +18,10 @@ import java.net.URISyntaxException;
 
 public class JDialogBalanes extends JDialog {
     private JLabel imageLabel;
-    private JSpinner numberSpinner;
     private int M, N;
-    private CImageNG imageBare, imageTransf;
-    private JLabelBeanCImage observerBare, observerTransf;
-    private JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneTransf = new JScrollPane();
+    private CImageNG imageBare, imageGros, imagePetits;
+    private JLabelBeanCImage observerBare, observerGros, observerPetits;
+    private JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneGros = new JScrollPane(), jScrollPanePetits = new JScrollPane();
 
     public JDialogBalanes(Frame parent, boolean modal, String titre) {
         //super(parent, modal);
@@ -31,7 +33,8 @@ public class JDialogBalanes extends JDialog {
         try
         {
             imageBare = new CImageNG(new File(getClass().getClassLoader().getResource("images_step_5/balanes.png").toURI()));
-            imageTransf = new CImageNG(M,N, 255);
+            imageGros = new CImageNG(M,N,255);
+            imagePetits = new CImageNG(M,N,255);
         }
         catch (CImageNGException | URISyntaxException ex)
         { System.out.println("Erreur CImageNG : " + ex.getMessage()); } catch (IOException e) {
@@ -39,12 +42,11 @@ public class JDialogBalanes extends JDialog {
         }
 
         observerBare = new JLabelBeanCImage(imageBare);
-        observerTransf = new JLabelBeanCImage(imageTransf);
+        observerGros = new JLabelBeanCImage(imageGros);
+        observerPetits = new JLabelBeanCImage(imagePetits);
         jScrollPaneBare.setViewportView(observerBare);
-        jScrollPaneTransf.setViewportView(observerTransf);
-
-        // Créer le sélecteur de nombres entiers
-        numberSpinner = new JSpinner(new SpinnerNumberModel(15, 15, 255, 1));
+        jScrollPaneGros.setViewportView(observerGros);
+        jScrollPanePetits.setViewportView(observerPetits);
 
         // Créer un bouton pour afficher l'image sélectionnée
         JButton showImageButton = new JButton("Traiter l'image");
@@ -61,35 +63,44 @@ public class JDialogBalanes extends JDialog {
 
         // Créer un conteneur principal et ajouter les composants
         JPanel mainFrame = new JPanel();
+        JPanel imagePanel = new JPanel();
+        JPanel panelHolder = new JPanel();
         mainFrame.setLayout(new BoxLayout(mainFrame,BoxLayout.Y_AXIS));
-        mainFrame.add(new JLabel("Frequence de coupure :"));
-        mainFrame.add(numberSpinner);
-        mainFrame.add(jScrollPaneBare);
+        imagePanel.add(jScrollPaneBare);
+        imagePanel.add(jScrollPaneGros);
+        imagePanel.add(jScrollPanePetits);
         mainFrame.add(showImageButton);
-        mainFrame.add(jScrollPaneTransf);
+        imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.X_AXIS));
+        panelHolder.add(mainFrame);
+        panelHolder.add(imagePanel);
 
         // Ajouter le conteneur principal à la fenêtre
-        getContentPane().add(mainFrame);
+        getContentPane().add(panelHolder);
         pack();
         setVisible(true);
     }
 
     private void displayImage() throws CImageNGException {
-        // Obtenir la valeur sélectionnée dans le sélecteur de nombres
-        int freqCoup = (int) numberSpinner.getValue();
+        int[][] imageTraitee = MorphoElementaire.fermeture(imageBare.getMatrice(), 9);
+        imageTraitee = MorphoElementaire.erosion(imageTraitee, 21);
+        imageTraitee = MorphoElementaire.dilatation(imageTraitee, 15);
 
-        // Obtenir l'image traitée
-        int[][] imageTraitee = FiltrageLineaireGlobal.filtrePasseBasIdeal(imageBare.getMatrice(), freqCoup);
+        int[][] masque = Seuillage.seuillageSimple(imageTraitee, 150);
+
+        int[][] gros = MorphoComplexe.dilatationGeodesique(masque, imageBare.getMatrice(), 1);
+
+        int[][] petits = ContoursNonLineaire.subtractMatrices(imageBare.getMatrice(), gros);
 
         // Afficher l'image dans l'étiquette
-        imageTransf.setMatrice(imageTraitee);
+        imageGros.setMatrice(gros);
+        imagePetits.setMatrice(petits);
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new JDialogBalanes(new JFrame(), true,null).setVisible(true);
+                new JDialogPetitsPois(new JFrame(), true,null).setVisible(true);
             }
         });
     }
