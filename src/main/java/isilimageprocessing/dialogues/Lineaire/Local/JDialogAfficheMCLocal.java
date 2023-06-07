@@ -1,9 +1,8 @@
-package isilimageprocessing.dialogues;
+package isilimageprocessing.dialogues.Lineaire.Local;
 
 import cimage.CImageNG;
 import cimage.exceptions.CImageNGException;
 import cimage.observers.JLabelBeanCImage;
-import imageprocessing.Lineaire.FiltrageLineaireGlobal;
 import imageprocessing.Lineaire.FiltrageLineaireLocal;
 
 import javax.swing.*;
