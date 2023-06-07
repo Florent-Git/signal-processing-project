@@ -82,14 +82,21 @@ public class JDialogBalanes extends JDialog {
 
     private void displayImage() throws CImageNGException {
         int[][] imageTraitee = MorphoElementaire.fermeture(imageBare.getMatrice(), 9);
-        imageTraitee = MorphoElementaire.erosion(imageTraitee, 21);
-        imageTraitee = MorphoElementaire.dilatation(imageTraitee, 15);
+        int[][] erode = MorphoElementaire.erosion(imageTraitee, 21);
+        int[][] dilatee = MorphoElementaire.dilatation(erode, 25);
 
-        int[][] masque = Seuillage.seuillageSimple(imageTraitee, 150);
+        int[][] masque = Seuillage.seuillageSimple(dilatee, 150);
 
         int[][] gros = MorphoComplexe.dilatationGeodesique(masque, imageBare.getMatrice(), 1);
 
+
         int[][] petits = ContoursNonLineaire.subtractMatrices(imageBare.getMatrice(), gros);
+        petits = Seuillage.seuillageSimple(petits, 150);
+        petits = MorphoElementaire.erosion(petits, 3);
+        petits = MorphoElementaire.dilatation(petits, 5);
+        petits = Seuillage.seuillageSimple(petits, 150);
+        petits = MorphoComplexe.dilatationGeodesique(petits, imageBare.getMatrice(), 1);
+
 
         // Afficher l'image dans l'étiquette
         imageGros.setMatrice(gros);
