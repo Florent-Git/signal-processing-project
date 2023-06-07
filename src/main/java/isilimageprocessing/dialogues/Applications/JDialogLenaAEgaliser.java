@@ -70,7 +70,6 @@ public class JDialogLenaAEgaliser extends JDialog {
         // Créer un conteneur principal et ajouter les composants
         JPanel mainFrame = new JPanel();
         mainFrame.setLayout(new BoxLayout(mainFrame,BoxLayout.Y_AXIS));
-        mainFrame.add(new JLabel("Frequence de coupure :"));
         mainFrame.add(jScrollPaneBare);
         mainFrame.add(showImageDependent);
         mainFrame.add(showImageIndependent);
