@@ -1,8 +1,11 @@
 package isilimageprocessing.dialogues.Applications;
 
 import cimage.CImageNG;
+import cimage.CImageRGB;
 import cimage.exceptions.CImageNGException;
+import cimage.exceptions.CImageRGBException;
 import cimage.observers.JLabelBeanCImage;
+import imageprocessing.Histogramme.Histogramme;
 import imageprocessing.Lineaire.FiltrageLineaireGlobal;
 
 import javax.swing.*;
@@ -14,10 +17,10 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class JDialogLenaAEgaliser extends JDialog {
+    private Histogramme histogramme = new Histogramme();
     private JLabel imageLabel;
-    private JSpinner numberSpinner;
     private int M, N;
-    private CImageNG imageBare, imageTransf;
+    private CImageRGB imageBare, imageTransf;
     private JLabelBeanCImage observerBare, observerTransf;
     private JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneTransf = new JScrollPane();
 
@@ -30,10 +33,10 @@ public class JDialogLenaAEgaliser extends JDialog {
         N = 256;
         try
         {
-            imageBare = new CImageNG(new File(getClass().getClassLoader().getResource("images_step_5/lenaAEgaliser.jpg").toURI()));
-            imageTransf = new CImageNG(M,N, 255);
+            imageBare = new CImageRGB(new File(getClass().getClassLoader().getResource("images_step_5/lenaAEgaliser.jpg").toURI()));
+            imageTransf = new CImageRGB(M,N, Color.BLACK);
         }
-        catch (CImageNGException | URISyntaxException ex)
+        catch (CImageRGBException | URISyntaxException ex)
         { System.out.println("Erreur CImageNG : " + ex.getMessage()); } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -43,19 +46,24 @@ public class JDialogLenaAEgaliser extends JDialog {
         jScrollPaneBare.setViewportView(observerBare);
         jScrollPaneTransf.setViewportView(observerTransf);
 
-        // Créer le sélecteur de nombres entiers
-        numberSpinner = new JSpinner(new SpinnerNumberModel(15, 15, 255, 1));
-
         // Créer un bouton pour afficher l'image sélectionnée
-        JButton showImageButton = new JButton("Traiter l'image");
-        showImageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    displayImage();
-                } catch (CImageNGException ex) {
-                    throw new RuntimeException(ex);
-                }
+        JButton showImageIndependent = new JButton("Traiter l'image (RGB Séparément)");
+        JButton showImageDependent = new JButton("Traiter l'image (RGB sur base des niveaux de gris");
+        showImageIndependent.addActionListener(e -> {
+            try {
+                displayImageFromRGB();
+            } catch (CImageNGException | CImageRGBException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        showImageDependent.addActionListener(e -> {
+            try {
+                displayImageFromNG();
+            } catch (CImageNGException ex) {
+                throw new RuntimeException(ex);
+            } catch (CImageRGBException ex) {
+                throw new RuntimeException(ex);
             }
         });
 
@@ -63,9 +71,9 @@ public class JDialogLenaAEgaliser extends JDialog {
         JPanel mainFrame = new JPanel();
         mainFrame.setLayout(new BoxLayout(mainFrame,BoxLayout.Y_AXIS));
         mainFrame.add(new JLabel("Frequence de coupure :"));
-        mainFrame.add(numberSpinner);
         mainFrame.add(jScrollPaneBare);
-        mainFrame.add(showImageButton);
+        mainFrame.add(showImageDependent);
+        mainFrame.add(showImageIndependent);
         mainFrame.add(jScrollPaneTransf);
 
         // Ajouter le conteneur principal à la fenêtre
@@ -74,15 +82,39 @@ public class JDialogLenaAEgaliser extends JDialog {
         setVisible(true);
     }
 
-    private void displayImage() throws CImageNGException {
-        // Obtenir la valeur sélectionnée dans le sélecteur de nombres
-        int freqCoup = (int) numberSpinner.getValue();
+    private void displayImageFromNG() throws CImageRGBException, CImageNGException {
+        var ngMatrix = imageBare.getCImageNG().getMatrice();
+        var equalizeNG = histogramme.creerCourbeTonaleEgalisation(imageBare.getCImageNG().getMatrice());
+        int[][] red = new int[ngMatrix.length][ngMatrix[0].length],
+            green = new int[ngMatrix.length][ngMatrix[0].length],
+            blue = new int[ngMatrix.length][ngMatrix[0].length];
+        imageBare.getMatricesRGB(red, green, blue);
+        red = histogramme.rehaussement(red, equalizeNG);
+        green = histogramme.rehaussement(green, equalizeNG);
+        blue = histogramme.rehaussement(blue, equalizeNG);
 
-        // Obtenir l'image traitée
-        int[][] imageTraitee = FiltrageLineaireGlobal.filtrePasseBasIdeal(imageBare.getMatrice(), freqCoup);
+        imageTransf.setMatricesRGB(red, green, blue);
+    }
 
-        // Afficher l'image dans l'étiquette
-        imageTransf.setMatrice(imageTraitee);
+    private void displayImageFromRGB() throws CImageNGException, CImageRGBException {
+        var ngMatrix = imageBare.getCImageNG().getMatrice();
+
+
+        int[][] red = new int[ngMatrix.length][ngMatrix[0].length],
+                green = new int[ngMatrix.length][ngMatrix[0].length],
+                blue = new int[ngMatrix.length][ngMatrix[0].length];
+
+        imageBare.getMatricesRGB(red, green, blue);
+
+        var courbe_red = histogramme.creerCourbeTonaleEgalisation(red);
+        var courbe_green = histogramme.creerCourbeTonaleEgalisation(blue);
+        var courbe_blue = histogramme.creerCourbeTonaleEgalisation(green);
+
+        red = histogramme.rehaussement(red, courbe_red);
+        green = histogramme.rehaussement(green, courbe_green);
+        blue = histogramme.rehaussement(blue, courbe_blue);
+
+        imageTransf.setMatricesRGB(red, green, blue);
     }
 
     public static void main(String[] args) {
