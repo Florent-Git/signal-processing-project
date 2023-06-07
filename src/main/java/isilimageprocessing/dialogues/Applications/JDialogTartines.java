@@ -1,9 +1,16 @@
 package isilimageprocessing.dialogues.Applications;
 
 import cimage.CImageNG;
+import cimage.CImageRGB;
 import cimage.exceptions.CImageNGException;
+import cimage.exceptions.CImageRGBException;
 import cimage.observers.JLabelBeanCImage;
+import imageprocessing.Contours.ContoursLineaire;
+import imageprocessing.Contours.ContoursNonLineaire;
+import imageprocessing.Histogramme.Histogramme;
 import imageprocessing.Lineaire.FiltrageLineaireGlobal;
+import imageprocessing.NonLineaire.MorphoElementaire;
+import imageprocessing.Seuillage.Seuillage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +22,8 @@ import java.net.URISyntaxException;
 
 public class JDialogTartines extends JDialog {
     private JLabel imageLabel;
-    private JSpinner numberSpinner;
     private int M, N;
-    private CImageNG imageBare, imageTransf;
+    private CImageRGB imageBare, imageTransf;
     private JLabelBeanCImage observerBare, observerTransf;
     private JScrollPane jScrollPaneBare = new JScrollPane(), jScrollPaneTransf = new JScrollPane();
 
@@ -30,10 +36,10 @@ public class JDialogTartines extends JDialog {
         N = 600;
         try
         {
-            imageBare = new CImageNG(new File(getClass().getClassLoader().getResource("images_step_5/Tartines.jpg").toURI()));
-            imageTransf = new CImageNG(M,N, 255);
+            imageBare = new CImageRGB(new File(getClass().getClassLoader().getResource("images_step_5/Tartines.jpg").toURI()));
+            imageTransf = new CImageRGB(M,N, 255,255,255);
         }
-        catch (CImageNGException | URISyntaxException ex)
+        catch (CImageRGBException | URISyntaxException ex)
         { System.out.println("Erreur CImageNG : " + ex.getMessage()); } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -42,9 +48,6 @@ public class JDialogTartines extends JDialog {
         observerTransf = new JLabelBeanCImage(imageTransf);
         jScrollPaneBare.setViewportView(observerBare);
         jScrollPaneTransf.setViewportView(observerTransf);
-
-        // Créer le sélecteur de nombres entiers
-        numberSpinner = new JSpinner(new SpinnerNumberModel(15, 15, 255, 1));
 
         // Créer un bouton pour afficher l'image sélectionnée
         JButton showImageButton = new JButton("Traiter l'image");
@@ -62,8 +65,6 @@ public class JDialogTartines extends JDialog {
         // Créer un conteneur principal et ajouter les composants
         JPanel mainFrame = new JPanel();
         mainFrame.setLayout(new BoxLayout(mainFrame,BoxLayout.Y_AXIS));
-        mainFrame.add(new JLabel("Frequence de coupure :"));
-        mainFrame.add(numberSpinner);
         mainFrame.add(jScrollPaneBare);
         mainFrame.add(showImageButton);
         mainFrame.add(jScrollPaneTransf);
@@ -75,14 +76,41 @@ public class JDialogTartines extends JDialog {
     }
 
     private void displayImage() throws CImageNGException {
-        // Obtenir la valeur sélectionnée dans le sélecteur de nombres
-        int freqCoup = (int) numberSpinner.getValue();
 
-        // Obtenir l'image traitée
-        int[][] imageTraitee = FiltrageLineaireGlobal.filtrePasseBasIdeal(imageBare.getMatrice(), freqCoup);
+        try {
+            int[][] matriceR = new int[M][N];
+            int[][] matriceG = new int[M][N];
+            int[][] matriceB = new int[M][N];
+            imageBare.getMatricesRGB(matriceR, matriceG, matriceB);
 
-        // Afficher l'image dans l'étiquette
-        imageTransf.setMatrice(imageTraitee);
+//            matriceG = Seuillage.seuillageSimple(matriceG, 200);
+
+            Histogramme histogramme = new Histogramme();
+
+            var courbe = histogramme.creerCourbeTonaleEgalisation(matriceR);
+            int[][] contours = histogramme.rehaussement(matriceR, courbe);
+
+            courbe = histogramme.creerCourbeTonaleEgalisation(contours);
+            contours = histogramme.rehaussement(contours, courbe);
+
+            contours = Seuillage.seuillageSimple(contours, 200);
+            contours = MorphoElementaire.dilatation(contours, 5);
+            contours = MorphoElementaire.erosion(contours, 7);
+
+            contours = ContoursLineaire.laplacien8(contours);
+
+            contours = Seuillage.seuillageSimple(contours, 1);
+            contours = MorphoElementaire.dilatation(contours, 3);
+
+            matriceR = colleMatrix(contours, new int[M][N]);
+            matriceG = colleMatrix(matriceG, contours);
+
+            imageTransf.setMatricesRGB(matriceR, matriceG, matriceB);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public static void main(String[] args) {
@@ -92,5 +120,28 @@ public class JDialogTartines extends JDialog {
                 new JDialogTartines(new JFrame(), true,null).setVisible(true);
             }
         });
+    }
+
+    public static int[][] colleMatrix(int[][] matrice, int[][] masque){
+        int[][] result = new int[matrice.length][matrice[0].length];
+        for (int i = 0; i < matrice.length; i++) {
+            for (int j = 0; j < matrice[0].length; j++) {
+                if(masque[i][j] > 15)
+                    result[i][j] = masque[i][j];
+                else
+                    result[i][j] = matrice[i][j];
+            }
+        }
+        return  result;
+    }
+
+    public static int[][] andMatrix(int[][] matrice, int[][] masque){
+        int[][] result = new int[matrice.length][matrice[0].length];
+        for (int i = 0; i < matrice.length; i++) {
+            for (int j = 0; j < matrice[0].length; j++) {
+                result[i][j] = matrice[i][j] & masque[i][j];
+            }
+        }
+        return  result;
     }
 }
