@@ -9,6 +9,7 @@ import imageprocessing.Contours.ContoursLineaire;
 import imageprocessing.Contours.ContoursNonLineaire;
 import imageprocessing.Histogramme.Histogramme;
 import imageprocessing.Lineaire.FiltrageLineaireGlobal;
+import imageprocessing.NonLineaire.MorphoComplexe;
 import imageprocessing.NonLineaire.MorphoElementaire;
 import imageprocessing.Seuillage.Seuillage;
 
@@ -19,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.security.spec.ECField;
 
 public class JDialogTartines extends JDialog {
     private JLabel imageLabel;
@@ -75,32 +77,42 @@ public class JDialogTartines extends JDialog {
         setVisible(true);
     }
 
-    private void displayImage() throws CImageNGException {
-
+    private void displayImage() throws CImageNGException{
         try {
             int[][] matriceR = new int[M][N];
             int[][] matriceG = new int[M][N];
             int[][] matriceB = new int[M][N];
             imageBare.getMatricesRGB(matriceR, matriceG, matriceB);
 
-//            matriceG = Seuillage.seuillageSimple(matriceG, 200);
-
+            int[][] contours = new int[M][N];
             Histogramme histogramme = new Histogramme();
-
-            var courbe = histogramme.creerCourbeTonaleEgalisation(matriceR);
-            int[][] contours = histogramme.rehaussement(matriceR, courbe);
-
-            courbe = histogramme.creerCourbeTonaleEgalisation(contours);
-            contours = histogramme.rehaussement(contours, courbe);
-
-            contours = Seuillage.seuillageSimple(contours, 200);
+            var courbe = histogramme.creerCourbeTonaleEgalisation(matriceG);
+            contours = histogramme.rehaussement(matriceG, courbe);
+            contours = MorphoComplexe.filtreMedian(contours, 5);
+            contours = ContoursNonLineaire.gradientBeucher(contours);
+            contours = Seuillage.seuillageSimple(contours, 60);
             contours = MorphoElementaire.dilatation(contours, 5);
-            contours = MorphoElementaire.erosion(contours, 7);
 
-            contours = ContoursLineaire.laplacien8(contours);
+//            courbe = histogramme.creerCourbeTonaleEgalisation(matriceG);
+//            contours = histogramme.rehaussement(matriceG, courbe);
+//            contours = ContoursNonLineaire.gradientBeucher(contours);
+//            contours = ContoursLineaire.gradientPrewitt(contours, 1);
+//            contours = MorphoElementaire.dilatation(contours, 5);
+//            int[][] contoursR = Seuillage.seuillageSimple(contours, 180);
+//
+//            int[][] contoursV = andMatrix(contoursG, contoursR);
+//
+//            courbe = histogramme.creerCourbeTonaleEgalisation(matriceG);
+//            contours = histogramme.rehaussement(matriceG, courbe);
+//            contours = ContoursNonLineaire.gradientBeucher(contours);
+//            contours = ContoursLineaire.gradientPrewitt(contours, 2);
+//            contours = Seuillage.seuillageSimple(contours, 180);
+//
+//            contours = colleMatrix(contoursV, contours);
+//            contours = MorphoElementaire.fermeture(contours, 3);
 
-            contours = Seuillage.seuillageSimple(contours, 1);
-            contours = MorphoElementaire.dilatation(contours, 3);
+
+//            imageTransf.setMatricesRGB(new int[M][N], contours, new int[M][N]);
 
             matriceR = colleMatrix(contours, new int[M][N]);
             matriceG = colleMatrix(matriceG, contours);
@@ -109,9 +121,45 @@ public class JDialogTartines extends JDialog {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
+
+//    private void displayImage() throws CImageNGException {
+//
+//        try {
+//            int[][] matriceR = new int[M][N];
+//            int[][] matriceG = new int[M][N];
+//            int[][] matriceB = new int[M][N];
+//            imageBare.getMatricesRGB(matriceR, matriceG, matriceB);
+//
+////            matriceG = Seuillage.seuillageSimple(matriceG, 200);
+//
+//            Histogramme histogramme = new Histogramme();
+//
+//            var courbe = histogramme.creerCourbeTonaleEgalisation(matriceR);
+//            int[][] contours = histogramme.rehaussement(matriceR, courbe);
+//
+//            courbe = histogramme.creerCourbeTonaleEgalisation(contours);
+//            contours = histogramme.rehaussement(contours, courbe);
+//
+//            contours = Seuillage.seuillageSimple(contours, 200);
+//            contours = MorphoElementaire.dilatation(contours, 5);
+//            contours = MorphoElementaire.erosion(contours, 7);
+//
+//            contours = ContoursLineaire.laplacien8(contours);
+//
+//            contours = Seuillage.seuillageSimple(contours, 1);
+//            contours = MorphoElementaire.dilatation(contours, 3);
+//
+//            matriceR = colleMatrix(contours, new int[M][N]);
+//            matriceG = colleMatrix(matriceG, contours);
+//
+//            imageTransf.setMatricesRGB(matriceR, matriceG, matriceB);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
