@@ -91,30 +91,8 @@ public class JDialogTartines extends JDialog {
             contours = MorphoComplexe.filtreMedian(contours, 5);
             contours = ContoursNonLineaire.gradientBeucher(contours);
             contours = Seuillage.seuillageSimple(contours, 60);
-            contours = MorphoElementaire.dilatation(contours, 5);
+            contours = MorphoElementaire.dilatation(contours, 3);
 
-//            courbe = histogramme.creerCourbeTonaleEgalisation(matriceG);
-//            contours = histogramme.rehaussement(matriceG, courbe);
-//            contours = ContoursNonLineaire.gradientBeucher(contours);
-//            contours = ContoursLineaire.gradientPrewitt(contours, 1);
-//            contours = MorphoElementaire.dilatation(contours, 5);
-//            int[][] contoursR = Seuillage.seuillageSimple(contours, 180);
-//
-//            int[][] contoursV = andMatrix(contoursG, contoursR);
-//
-//            courbe = histogramme.creerCourbeTonaleEgalisation(matriceG);
-//            contours = histogramme.rehaussement(matriceG, courbe);
-//            contours = ContoursNonLineaire.gradientBeucher(contours);
-//            contours = ContoursLineaire.gradientPrewitt(contours, 2);
-//            contours = Seuillage.seuillageSimple(contours, 180);
-//
-//            contours = colleMatrix(contoursV, contours);
-//            contours = MorphoElementaire.fermeture(contours, 3);
-
-
-//            imageTransf.setMatricesRGB(new int[M][N], contours, new int[M][N]);
-
-            matriceR = colleMatrix(contours, new int[M][N]);
             matriceG = colleMatrix(matriceG, contours);
 
             imageTransf.setMatricesRGB(matriceR, matriceG, matriceB);
