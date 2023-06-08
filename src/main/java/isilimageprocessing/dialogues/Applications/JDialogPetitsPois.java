@@ -70,11 +70,12 @@ public class JDialogPetitsPois extends JDialog {
         JPanel imagePanel = new JPanel();
         JPanel panelHolder = new JPanel();
         mainFrame.setLayout(new BoxLayout(mainFrame,BoxLayout.Y_AXIS));
+        imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.X_AXIS));
         imagePanel.add(jScrollPaneBare);
         imagePanel.add(jScrollPaneBleu);
         imagePanel.add(jScrollPaneRouge);
         mainFrame.add(showImageButton);
-        imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.X_AXIS));
+        panelHolder.setLayout(new BoxLayout(panelHolder, BoxLayout.X_AXIS));
         panelHolder.add(mainFrame);
         panelHolder.add(imagePanel);
 

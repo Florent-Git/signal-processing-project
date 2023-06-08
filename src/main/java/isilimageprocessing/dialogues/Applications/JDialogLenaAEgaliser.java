@@ -34,7 +34,7 @@ public class JDialogLenaAEgaliser extends JDialog {
         try
         {
             imageBare = new CImageRGB(new File(getClass().getClassLoader().getResource("images_step_5/lenaAEgaliser.jpg").toURI()));
-            imageTransf = new CImageRGB(M,N, Color.BLACK);
+            imageTransf = new CImageRGB(M,N, Color.WHITE);
         }
         catch (CImageRGBException | URISyntaxException ex)
         { System.out.println("Erreur CImageNG : " + ex.getMessage()); } catch (IOException e) {
@@ -47,7 +47,7 @@ public class JDialogLenaAEgaliser extends JDialog {
         jScrollPaneTransf.setViewportView(observerTransf);
 
         // Créer un bouton pour afficher l'image sélectionnée
-        JButton showImageIndependent = new JButton("Traiter l'image (RGB Séparément)");
+        JButton showImageIndependent = new JButton("Traiter l'image (RGB Separement)");
         JButton showImageDependent = new JButton("Traiter l'image (RGB sur base des niveaux de gris");
         showImageIndependent.addActionListener(e -> {
             try {
