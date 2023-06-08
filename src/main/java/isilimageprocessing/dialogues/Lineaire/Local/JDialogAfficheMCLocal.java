@@ -64,7 +64,7 @@ public class JDialogAfficheMCLocal extends JDialog {
         // Créer les sélecteurs de nombres doubles
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                convolutionSpinners[i][j] = new JSpinner((new SpinnerNumberModel(0, 0, 1, 0.01)));
+                convolutionSpinners[i][j] = new JSpinner((new SpinnerNumberModel(0, -1, 1, 0.01)));
                 convolutionSpinners[i][j].setVisible(false);
             }
         }

@@ -54,7 +54,7 @@ public class JDialogReconstructionGeodesique extends JDialog {
         // Créer un bouton pour charger un masque
         JButton loadMaskButton = new JButton("Selectionner un masque");
         loadMaskButton.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
+            JFileChooser fileChooser = new JFileChooser("./src/main/resources");
             int returnValue = fileChooser.showOpenDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
