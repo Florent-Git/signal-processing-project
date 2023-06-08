@@ -92,6 +92,7 @@ public class JDialogVaisseaux extends JDialog {
         imagePanel.add(jScrollPaneBare);
         imagePanel.add(jScrollPaneSynthese);
         imagePanel.add(jScrollPaneSynthese2);
+        panelHolder.setLayout(new BoxLayout(panelHolder, BoxLayout.X_AXIS));
         panelHolder.add(mainFrame);
         panelHolder.add(imagePanel);
 
