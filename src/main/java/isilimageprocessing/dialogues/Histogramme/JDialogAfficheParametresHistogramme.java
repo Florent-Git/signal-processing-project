@@ -46,7 +46,7 @@ public class JDialogAfficheParametresHistogramme extends JDialog {
         contraste2Text = new JLabel();
 
         // Créer un bouton pour afficher l'image sélectionnée
-        JButton showImageButton = new JButton("Afficher les paramètres");
+        JButton showImageButton = new JButton("Afficher les parametres");
         showImageButton.addActionListener(e -> {
             try {
                 displayParameters();

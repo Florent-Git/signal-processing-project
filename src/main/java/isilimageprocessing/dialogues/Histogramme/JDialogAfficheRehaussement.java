@@ -122,8 +122,8 @@ public abstract class JDialogAfficheRehaussement extends JDialog {
         XYDataset courbeTonaleDataset = DatasetUtilities.sampleFunction2D(courbeTonale2d, 0, 255.0, 255, "f(x)");
         JFreeChart courbeTonaleChart = ChartFactory.createXYLineChart(
                 "Courbe Tonale",
-                "Intensité d'entrée",
-                "Intensité de sortie",
+                "Intensite d'entree",
+                "Intensite de sortie",
                 courbeTonaleDataset,
                 PlotOrientation.VERTICAL,
                 false,
@@ -140,7 +140,7 @@ public abstract class JDialogAfficheRehaussement extends JDialog {
     }
 
     protected void displayTransformedHistogram() throws CImageNGException {
-        var transfoHisto = displayHistogram(cImageTransfo.getMatrice(), "Histogramme de l'image transformée");
+        var transfoHisto = displayHistogram(cImageTransfo.getMatrice(), "Histogramme de l'image transformee");
         histogrammeTransfo = new ChartPanel(transfoHisto);
     }
 

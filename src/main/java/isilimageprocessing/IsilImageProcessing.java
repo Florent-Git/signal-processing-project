@@ -662,23 +662,23 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
         });
 
         jMenuHistogrammeParametres.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/report_32_hot.jpg")));
-        jMenuHistogrammeParametres.setText("Paramètres");
+        jMenuHistogrammeParametres.setText("Parametres");
         jMenuHistogrammeParametres.addActionListener(this::jMenuHistogrammeParametresActionPerformed);
         
         jMenuHistogrammeRehaussementLineaireSaturation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/report_32_hot.jpg")));
-        jMenuHistogrammeRehaussementLineaireSaturation.setText("Réhaussement Saturation Linéaire");
+        jMenuHistogrammeRehaussementLineaireSaturation.setText("Rehaussement Saturation Lineaire");
         jMenuHistogrammeRehaussementLineaireSaturation.addActionListener(this::jMenuHistogrammeRehaussementLineaireSaturationActionPerformed);
         
         jMenuHistogrammeRehaussementGamma.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/report_32_hot.jpg")));
-        jMenuHistogrammeRehaussementGamma.setText("Réhaussement Gamma");
+        jMenuHistogrammeRehaussementGamma.setText("Rehaussement Gamma");
         jMenuHistogrammeRehaussementGamma.addActionListener(this::jMenuHistogrammeRehaussementGammaActionPerformed);
         
         jMenuHistogrammeRehaussementNegatif.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/report_32_hot.jpg")));
-        jMenuHistogrammeRehaussementNegatif.setText("Réhaussement Negatif");
+        jMenuHistogrammeRehaussementNegatif.setText("Rehaussement Negatif");
         jMenuHistogrammeRehaussementNegatif.addActionListener(this::jMenuHistogrammeRehaussementNegatifActionPerformed);
         
         jMenuHistogrammeRehaussementEgalisation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/report_32_hot.jpg")));
-        jMenuHistogrammeRehaussementEgalisation.setText("Réhaussement Egalisation");
+        jMenuHistogrammeRehaussementEgalisation.setText("Rehaussement Egalisation");
         jMenuHistogrammeRehaussementEgalisation.addActionListener(this::jMenuHistogrammeRehaussementEgalisationActionPerformed);
         
         jMenuHistogramme.add(jMenuHistogrammeAfficher);
@@ -717,7 +717,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 
     private void jMenuHistogrammeRehaussementEgalisationActionPerformed(ActionEvent actionEvent) {
         try {
-            var dialog = new JDialogAfficheRehaussementEgalisation(this,true, imageNG.getMatrice(),"Réhaussement Egalisé");
+            var dialog = new JDialogAfficheRehaussementEgalisation(this,true, imageNG.getMatrice(),"Rehaussement Egalise");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex) {
@@ -727,7 +727,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 
     private void jMenuHistogrammeRehaussementNegatifActionPerformed(ActionEvent actionEvent) {
         try {
-            var dialog = new JDialogAfficheRehaussementNegatif(this,true, imageNG.getMatrice(),"Réhaussement Négatif");
+            var dialog = new JDialogAfficheRehaussementNegatif(this,true, imageNG.getMatrice(),"Rehaussement Negatif");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex) {
@@ -737,7 +737,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 
     private void jMenuHistogrammeRehaussementGammaActionPerformed(ActionEvent actionEvent) {
         try {
-            var dialog = new JDialogAfficheRehaussementGamma(this,true, imageNG.getMatrice(),"Réhaussement Gamma");
+            var dialog = new JDialogAfficheRehaussementGamma(this,true, imageNG.getMatrice(),"Rehaussement Gamma");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex) {
@@ -747,7 +747,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 
     private void jMenuHistogrammeRehaussementLineaireSaturationActionPerformed(ActionEvent actionEvent) {
         try {
-            var dialog = new JDialogAfficheRehaussementLineaireSaturation(this,true, imageNG.getMatrice(),"Réhaussement Linéaire");
+            var dialog = new JDialogAfficheRehaussementLineaireSaturation(this,true, imageNG.getMatrice(),"Rehaussement Lineaire");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex) {
@@ -790,7 +790,7 @@ public class IsilImageProcessing extends javax.swing.JFrame implements ClicListe
 
     private void jMenuHistogrammeParametresActionPerformed(ActionEvent evt) {
         try {
-            var dialog = new JDialogAfficheParametresHistogramme(this,true, imageNG.getMatrice(),"Paramètres Histogramme");
+            var dialog = new JDialogAfficheParametresHistogramme(this,true, imageNG.getMatrice(),"Parametres Histogramme");
             dialog.setVisible(true);
         }
         catch (CImageNGException ex) {
